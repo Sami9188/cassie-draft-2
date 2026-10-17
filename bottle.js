@@ -58,7 +58,7 @@
     const L = Math.max(2, o.label.length);
     const fs = Math.min(17, maxW / (L * 0.62 + (L - 1) * 0.28));
     const ls = Math.min(5, fs * 0.28);
-    const labelColor = (o.glass === 'noir' || o.glass === 'smoke') ? '#e2c58c' : 'rgba(30,24,16,0.78)';
+    const labelColor = o.labelColor || ((o.glass === 'noir' || o.glass === 'smoke') ? '#e2c58c' : 'rgba(30,24,16,0.78)');
     return `
 <svg viewBox="0 0 200 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${o.label} bottle render">
   <defs>

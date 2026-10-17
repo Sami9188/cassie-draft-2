@@ -1,11 +1,23 @@
-# CASSIE Perfumes · Website Draft 2 — "Maison Ivoire"
+# CASSIE Perfumes · Website Draft 2 — "Motion"
 
 Homepage design draft for the CASSIE Perfumes B2B website redesign, prepared by The Digital Elites.
 
 Live preview: https://sami9188.github.io/cassie-draft-2/
 
-Direction: light editorial, ivory and cognac, Bodoni Moda + DM Sans. A "For Brands / Shop CASSIE" switch keeps manufacturing primary and the own-brand shop secondary.
+Direction: cinematic, motion-led. Black canvas, oversized grotesk typography with serif italic accents, CASSIE's own brand films as full-screen backgrounds, and scroll-driven scenes. Manufacturing (OEM / ODM / private label / bulk export) leads; the own-brand shop is a secondary section.
 
-Sections: editorial hero with bottle composition, services ticker, "choose your starting point" service paths (OEM / ODM / private label / bulk), scroll-driven process where a bottle assembles step by step, three packaging tiers + component library, numbers, quality & compliance, export regions, testimonial, quotation form with sample kit, The CASSIE Collection (secondary), SEO FAQ, footer.
+Motion features (all vanilla JS, no libraries, no build step):
+- Preloader counter and masked headline reveal
+- Smooth inertia scrolling (desktop), custom cursor with labels, magnetic buttons, film grain
+- Rotating full-screen brand films in the hero (fallback: animated mist)
+- Word-by-word manifesto reveal, counters, marquee
+- Pinned horizontal scroll through the four service routes
+- Film that scales from a small frame to full screen on scroll
+- Six-step process as a stacking card deck
+- 3D tilt packaging tiers with cursor glow, spotlight compliance grid
+- Export list with hover previews, drag gallery for the CASSIE collection, demo RFQ form
 
-Notes: static HTML/CSS/JS, no build step. Product images are loaded from cassieperfumes.com. Figures, certifications and the testimonial are placeholders pending CASSIE approval. Forms are demo-only (Zoho CRM in production).
+Notes:
+- Brand films and product photos are loaded from cassieperfumes.com. To self-host, drop the mp4 files into `media/` and update the `films` array in `main.js`.
+- Figures, MOQs, certifications and testimonials are placeholders pending CASSIE approval.
+- Forms are demo-only (Zoho CRM in production).
