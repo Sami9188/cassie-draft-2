@@ -105,7 +105,16 @@
   resize(); addEventListener('resize', resize);
   const blobs = [];
   for (let i = 0; i < 5; i++) blobs.push({ x: .2 + Math.random() * .6, y: .2 + Math.random() * .6, r: .32 + Math.random() * .22, sx: (.00006 + Math.random() * .00008), sy: (.00005 + Math.random() * .00008), a: Math.random() * 6.28, b: Math.random() * 6.28, ci: i % 4 });
-  const trail = [];
+  const trail = [], puffs = [];
+  window.__puff = (x, y, n) => {
+    if (reduced) return;
+    const now = performance.now();
+    for (let i = 0; i < (n || 22); i++) {
+      const a = -0.35 + (Math.random() - .5) * .9, sp = .08 + Math.random() * .22;
+      puffs.push({ x, y, t: now, life: 700 + Math.random() * 700, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - .02, r: 3 + Math.random() * 9, d: Math.random() < .3 });
+    }
+    if (puffs.length > 160) puffs.splice(0, puffs.length - 160);
+  };
   let mx = -1, my = -1, lastEmit = 0;
   if (fine && !reduced) addEventListener('mousemove', e => {
     mx = e.clientX; my = e.clientY;
@@ -136,6 +145,17 @@
       g.addColorStop(1, `rgba(${c[0] | 0},${c[1] | 0},${c[2] | 0},0)`);
       ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, r, 0, 6.283); ctx.fill();
     }
+    // spray puffs
+    for (let i = puffs.length - 1; i >= 0; i--) {
+      const p = puffs[i], dt = now - p.t, age = dt / p.life;
+      if (age > 1) { puffs.splice(i, 1); continue; }
+      const x = (p.x + p.vx * dt * (1 - age * .5)) * DPR, y = (p.y + p.vy * dt * (1 - age * .5) + age * age * 18) * DPR;
+      const r = (p.r + age * (p.d ? 6 : 26)) * DPR, al = (1 - age) * (p.d ? .9 : .5);
+      const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+      g.addColorStop(0, `rgba(255,240,230,${light ? al * .5 : al})`);
+      g.addColorStop(1, 'rgba(255,240,230,0)');
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, r, 0, 6.283); ctx.fill();
+    }
     ctx.globalCompositeOperation = 'source-over';
   }
 
@@ -160,6 +180,7 @@
     const open = () => { rows.forEach(x => x.classList.toggle('open', x === r)); };
     head.addEventListener('click', open);
     if (fine) head.addEventListener('mouseenter', open);
+    if (fine) r.addEventListener('mousemove', e => { const b = r.getBoundingClientRect(); r.style.setProperty('--gx', ((e.clientX - b.left) / b.width * 100) + '%'); r.style.setProperty('--gy', ((e.clientY - b.top) / b.height * 100) + '%'); }, { passive: true });
   });
 
   /* ---------- fragrance families ---------- */
@@ -176,9 +197,15 @@
     const b = document.createElement('button');
     b.type = 'button'; b.textContent = f.name; b.style.setProperty('--a', (-90 + i * 60) + 'deg');
     b.addEventListener('click', () => setFam(i));
+    if (fine) {
+      b.addEventListener('mouseenter', () => { orb.style.setProperty('--c1', f.c1); orb.style.setProperty('--c2', f.c2); famBottle.style.setProperty('--ry', ((i % 2 ? 1 : -1) * 10) + 'deg'); });
+      b.addEventListener('mouseleave', () => { const f0 = FAM[curFam]; orb.style.setProperty('--c1', f0.c1); orb.style.setProperty('--c2', f0.c2); famBottle.style.setProperty('--ry', '0deg'); });
+    }
     ring.appendChild(b);
   });
+  let curFam = 0;
   function setFam(i) {
+    curFam = i;
     const f = FAM[i];
     $$('button', ring).forEach((b, n) => b.classList.toggle('on', n === i));
     orb.style.setProperty('--c1', f.c1); orb.style.setProperty('--c2', f.c2);
@@ -207,14 +234,20 @@
     capColor: { gold: 'Gold', silver: 'Silver', black: 'Matte black', rosegold: 'Rose gold', wood: 'Wood', white: 'White' },
     glass: { noir: 'noir lacquer', crystal: 'crystal clear', frosted: 'frosted', amber: 'amber', smoke: 'smoke', rose: 'blush', violet: 'violet', emerald: 'emerald' }
   };
-  const describe = () => `${names.shape[state.shape]} bottle · ${names.capColor[state.capColor]} ${names.cap[state.cap]} · ${names.glass[state.glass]} glass`;
-  function draw() {
-    state.liquid = liquids[state.glass];
-    state.labelColor = (state.glass === 'noir' || state.glass === 'smoke') ? '#e2c58c' : '#2a1c14';
-    render.innerHTML = window.bottleSVG(state);
-    render.classList.remove('swap'); void render.offsetWidth; render.classList.add('swap');
-    caption.textContent = describe();
+  const describe = (s = state) => `${names.shape[s.shape]} bottle · ${names.capColor[s.capColor]} ${names.cap[s.cap]} · ${names.glass[s.glass]} glass`;
+  function draw(s = state, preview = false) {
+    s.liquid = liquids[s.glass];
+    s.labelColor = (s.glass === 'noir' || s.glass === 'smoke') ? '#e2c58c' : '#2a1c14';
+    render.innerHTML = window.bottleSVG(s);
+    render.classList.toggle('preview', preview);
+    if (!preview) { render.classList.remove('swap'); void render.offsetWidth; render.classList.add('swap'); }
+    caption.textContent = describe(s) + (preview ? ' · preview' : '');
   }
+  // live preview on hover, commit on click
+  if (fine) $$('.opts').forEach(group => {
+    group.addEventListener('mouseover', e => { const b = e.target.closest('button'); if (!b) return; draw(Object.assign({}, state, { [group.dataset.key]: b.dataset.val }), true); });
+    group.addEventListener('mouseleave', () => draw());
+  });
   $$('.opts').forEach(group => group.addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b) return;
     $$('button', group).forEach(x => x.classList.remove('on')); b.classList.add('on');
@@ -238,6 +271,10 @@
     }).join('');
   }
   drawHub(); addEventListener('resize', drawHub);
+  $$('.node:not(.center)', hub).forEach((n, i) => {
+    n.addEventListener('mouseenter', () => { const p = hubLines.children[i]; if (p) p.classList.add('hot'); });
+    n.addEventListener('mouseleave', () => { const p = hubLines.children[i]; if (p) p.classList.remove('hot'); });
+  });
 
   /* ---------- RFQ demo ---------- */
   const form = $('#rfqForm');
@@ -252,6 +289,96 @@
     Array.from(form.children).forEach(c => { if (!c.classList.contains('f-done')) c.style.display = 'none'; });
     $('.f-done', form).hidden = false;
   });
+
+  /* ---------- hover & motion layer (fine pointers only) ---------- */
+  let cursor, cring, cLabel, cx = -100, cy = -100, rx = -100, ry = -100;
+  const mags = new Map();
+  if (fine && !reduced) {
+    // custom cursor
+    html.classList.add('cur');
+    cursor = document.createElement('div'); cursor.className = 'cursor';
+    cring = document.createElement('div'); cring.className = 'cursor-ring'; cring.innerHTML = '<span></span>';
+    document.body.append(cursor, cring); cLabel = cring.firstChild;
+    addEventListener('mousemove', e => { cx = e.clientX; cy = e.clientY; html.classList.remove('cur-out'); }, { passive: true });
+    document.addEventListener('mouseleave', () => html.classList.add('cur-out'));
+    document.addEventListener('mouseover', e => {
+      const t = e.target.closest('[data-cursor]');
+      const link = e.target.closest('a, button, label, select, .row-head, .ticker');
+      const text = e.target.closest('input, textarea');
+      cring.classList.toggle('big', !!link && !t && !text);
+      cring.classList.toggle('label', !!t);
+      cLabel.textContent = t ? t.dataset.cursor : '';
+      html.classList.toggle('cur-text', !!text);
+    });
+    addEventListener('mousedown', () => cring.classList.add('down'));
+    addEventListener('mouseup', () => cring.classList.remove('down'));
+
+    // magnetic pull + sheen position
+    $$('.btn, .fam-ring button, .opts button, .node:not(.center), .chip, .f-pills label, .burger').forEach(el => {
+      el.classList.add('mag');
+      el.addEventListener('mousemove', e => {
+        const r = el.getBoundingClientRect();
+        const k = el.classList.contains('btn') ? .3 : .22;
+        mags.set(el, { tx: (e.clientX - (r.left + r.width / 2)) * k, ty: (e.clientY - (r.top + r.height / 2)) * k, x: (mags.get(el) || {}).x || 0, y: (mags.get(el) || {}).y || 0 });
+        el.style.setProperty('--sx', ((e.clientX - r.left) / r.width * 100) + '%'); el.style.setProperty('--sy', ((e.clientY - r.top) / r.height * 100) + '%');
+      }, { passive: true });
+      el.addEventListener('mouseleave', () => { const m = mags.get(el); if (m) { m.tx = 0; m.ty = 0; } });
+    });
+
+    // tilt + glare (cards) and tilt (bottles)
+    $$('.hcard, .g-img, .qcard, .tiers div, .fam-card').forEach(el => el.setAttribute('data-tilt', 'card'));
+    $$('#famBottle, #packRender, .row-art').forEach(el => el.setAttribute('data-tilt', 'bottle'));
+    $$('[data-tilt]').forEach(el => {
+      const host = el.classList.contains('g-img') ? el.closest('.g-item') : el;
+      const max = el.dataset.tilt === 'bottle' ? 14 : 10;
+      host.addEventListener('mousemove', e => {
+        const r = el.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+        el.style.setProperty('--ry', ((x - .5) * max * 1.4).toFixed(2) + 'deg'); el.style.setProperty('--rx', ((.5 - y) * max).toFixed(2) + 'deg');
+        el.style.setProperty('--gx', (x * 100).toFixed(1) + '%'); el.style.setProperty('--gy', (y * 100).toFixed(1) + '%');
+      }, { passive: true });
+      host.addEventListener('mouseleave', () => { el.style.setProperty('--rx', '0deg'); el.style.setProperty('--ry', '0deg'); });
+    });
+
+    // spray: a puff of mist from the bottle cap when you reach a bottle
+    $$('.hcard, .g-img, #famBottle, #packRender, .row-art').forEach(el => el.addEventListener('mouseenter', () => {
+      const r = el.getBoundingClientRect(); window.__puff(r.left + r.width * .5, r.top + r.height * .16);
+    }));
+
+    // text roll-over on buttons and menu links
+    $$('.btn, .menu a, .nav-link').forEach(el => {
+      if (el.children.length) return;
+      const t = el.textContent.trim(); el.innerHTML = `<span class="rt"><span>${t}</span><span aria-hidden="true">${t}</span></span>`;
+    });
+
+    // headline wave on hover
+    $$('.display').forEach(h => h.addEventListener('mouseenter', () => {
+      if (!h.classList.contains('in') || h.classList.contains('wave')) return;
+      h.classList.add('wave'); const n = $$('.ch', h).length;
+      setTimeout(() => h.classList.remove('wave'), 760 + n * 14);
+    }));
+
+    // menu: sliding pill follows hover, rests on the active link
+    const menuEl = $('.menu');
+    const pillTo = a => { if (!a) { menuEl.style.setProperty('--mo', 0); return; } menuEl.style.setProperty('--ml', a.offsetLeft + 'px'); menuEl.style.setProperty('--mw', a.offsetWidth + 'px'); menuEl.style.setProperty('--mo', 1); };
+    menuLinks.forEach(a => a.addEventListener('mouseenter', () => pillTo(a)));
+    menuEl.addEventListener('mouseleave', () => pillTo($('.menu a.active')));
+    window.__pill = pillTo;
+
+    // footer wordmark: letters soften and swell near the pointer (Fraunces SOFT / wght axes)
+    const wm = $('.wordmark');
+    if (wm) {
+      wm.innerHTML = wm.textContent.trim().split('').map((ch, i) => `<span class="wl" style="--k:${i}">${ch}</span>`).join('');
+      const letters = $$('.wl', wm), foot = wm.closest('footer') || wm;
+      foot.addEventListener('mousemove', e => {
+        letters.forEach(l => {
+          const r = l.getBoundingClientRect(), d = Math.hypot(e.clientX - (r.left + r.width / 2), e.clientY - (r.top + r.height / 2));
+          const p = clamp(1 - d / (r.width * 2.2), 0, 1);
+          l.style.setProperty('--soft', (p * 100).toFixed(0)); l.style.setProperty('--w', (300 + p * 500).toFixed(0)); l.style.setProperty('--lift', (-p * r.height * .06).toFixed(1) + 'px');
+        });
+      }, { passive: true });
+      foot.addEventListener('mouseleave', () => letters.forEach(l => { l.style.setProperty('--soft', 0); l.style.setProperty('--w', 300); l.style.setProperty('--lift', '0px'); }));
+    }
+  }
 
   /* ---------- frame loop ---------- */
   let vh = innerHeight; addEventListener('resize', () => { vh = innerHeight; });
@@ -273,7 +400,21 @@
     if (Math.abs(y - lastY) > 4) lastY = y;
     let active = null;
     sections.forEach(s => { if (s.getBoundingClientRect().top <= vh * .4) active = s.id; });
-    menuLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + active));
+    let changed = false;
+    menuLinks.forEach(a => { const on = a.getAttribute('href') === '#' + active; if (on !== a.classList.contains('active')) changed = true; a.classList.toggle('active', on); });
+    if (changed && window.__pill && !$('.menu:hover')) window.__pill($('.menu a.active'));
+
+    // cursor + magnetic elements
+    if (cursor) {
+      cursor.style.transform = `translate(${cx}px, ${cy}px)`;
+      rx = lerp(rx, cx, .2); ry = lerp(ry, cy, .2);
+      cring.style.transform = `translate(${rx}px, ${ry}px)`;
+      mags.forEach((m, el) => {
+        m.x = lerp(m.x, m.tx, .18); m.y = lerp(m.y, m.ty, .18);
+        el.style.translate = `${m.x.toFixed(2)}px ${m.y.toFixed(2)}px`;
+        if (!m.tx && !m.ty && Math.abs(m.x) < .05 && Math.abs(m.y) < .05) { el.style.translate = ''; mags.delete(el); }
+      });
+    }
 
     // hero parallax
     px = lerp(px, tx, .06); py = lerp(py, ty, .06);

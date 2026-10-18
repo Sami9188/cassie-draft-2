@@ -22,6 +22,16 @@ A colour-shifting, motion-led site. Each section carries its own fragrance mood 
 9. The CASSIE collection (own-brand retail) and distributor enquiry
 10. Request a quotation form, contact, footer, WhatsApp button
 
+## Interaction layer (desktop pointers)
+
+- Custom cursor: a dot with a trailing ring that grows on links, becomes a labelled disc on bottles ("Spray") and products ("View"), and a caret in form fields.
+- Spray mist: reaching a bottle releases a puff of mist from its cap, drawn on the same canvas as the scent trail that follows the pointer.
+- Magnetic buttons and pills that pull toward the pointer; solid buttons fill with a rising liquid wave, glass buttons carry a sheen that follows the pointer.
+- Cards tilt in 3D with a glare and a glowing border that follows the pointer; bottles tilt toward the pointer.
+- Live previews: hovering a packaging option previews it on the bottle before you click; hovering a fragrance family recolours the aura.
+- Rolling text on menu links and buttons, a sliding pill in the menu, headline letters that ripple on hover, timeline dots that pulse, export routes that animate when a market is hovered, and a footer wordmark whose letters swell and soften near the pointer (Fraunces variable axes).
+- All of it is skipped on touch devices and for users who prefer reduced motion.
+
 ## Notes
 
 - Static HTML/CSS/JS, no build step, no external libraries. Fonts load from Google Fonts.
