@@ -1,4 +1,4 @@
-/* CASSIE Perfumes — Draft 2 motion engine. No dependencies. */
+/* CASSIE Perfumes — Draft 2 "Spectrum". Vanilla JS, no dependencies. */
 (function () {
   'use strict';
   const $ = (s, r) => (r || document).querySelector(s);
@@ -9,6 +9,21 @@
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const fine = window.matchMedia('(pointer: fine)').matches;
   const mobile = () => window.innerWidth <= 860;
+  const html = document.documentElement;
+
+  /* ---------- themes ---------- */
+  const THEMES = {
+    plum:     { bg: [22, 11, 29],    fg: [246, 238, 247], light: false, orbs: [[123, 44, 191], [255, 95, 162], [255, 184, 107], [70, 30, 120]] },
+    oud:      { bg: [28, 13, 10],    fg: [247, 239, 232], light: false, orbs: [[166, 58, 30], [226, 150, 42], [90, 31, 58], [120, 60, 30]] },
+    amber:    { bg: [42, 23, 8],     fg: [251, 242, 228], light: false, orbs: [[242, 169, 59], [255, 106, 61], [255, 217, 138], [160, 80, 30]] },
+    fresh:    { bg: [11, 36, 32],    fg: [236, 247, 241], light: false, orbs: [[47, 191, 143], [184, 230, 91], [31, 111, 139], [20, 120, 90]] },
+    musk:     { bg: [244, 235, 224], fg: [29, 20, 16],    light: true,  orbs: [[255, 217, 176], [255, 255, 255], [246, 199, 192], [255, 236, 200]] },
+    midnight: { bg: [10, 19, 38],    fg: [234, 240, 255], light: false, orbs: [[45, 91, 255], [127, 211, 255], [198, 139, 255], [30, 60, 140]] }
+  };
+  const themed = $$('[data-theme]');
+  let curTheme = 'plum';
+  const cur = { bg: THEMES.plum.bg.slice(), fg: THEMES.plum.fg.slice(), orbs: THEMES.plum.orbs.map(c => c.slice()) };
+  const rgb = c => `rgb(${c[0] | 0},${c[1] | 0},${c[2] | 0})`;
 
   /* ---------- bottles ---------- */
   $$('[data-bottle]').forEach(el => {
@@ -18,120 +33,49 @@
   });
   window.attachBottleFallbacks();
 
-  /* ---------- preloader ---------- */
+  /* ---------- split headlines ---------- */
+  $$('[data-split]').forEach(h => {
+    let i = 0;
+    const walk = node => {
+      Array.from(node.childNodes).forEach(n => {
+        if (n.nodeType === 3) {
+          if (!n.textContent.trim()) { n.remove(); return; }
+          const frag = document.createDocumentFragment();
+          n.textContent.split(/(\s+)/).forEach(part => {
+            if (!part) return;
+            if (/^\s+$/.test(part)) { const s = document.createElement('span'); s.className = 'sp'; frag.appendChild(s); return; }
+            const w = document.createElement('span'); w.className = 'w';
+            part.split('').forEach(ch => {
+              const s = document.createElement('span'); s.className = 'ch'; s.textContent = ch; s.style.setProperty('--i', i++); w.appendChild(s);
+            });
+            frag.appendChild(w);
+          });
+          n.replaceWith(frag);
+        } else if (n.nodeType === 1) walk(n);
+      });
+    };
+    walk(h);
+  });
+
+  /* ---------- loader ---------- */
   const loader = $('#loader');
-  const html = document.documentElement;
-  function finishLoad() {
+  function start() {
     loader.classList.add('out');
     html.classList.remove('lock');
-    $('.hero-title').classList.add('in');
-    setTimeout(() => $$('.hero .rv').forEach(e => e.classList.add('in')), 500);
-    setTimeout(() => loader.remove(), 1200);
+    $('.hero h1').classList.add('in');
+    setTimeout(() => $$('.hero .rv').forEach(e => e.classList.add('in')), 350);
+    setTimeout(() => loader.remove(), 1000);
   }
-  if (reduced) { finishLoad(); }
-  else {
-    html.classList.add('lock');
-    const num = $('#loaderNum'), bar = $('#loaderBar');
-    const t0 = performance.now(), dur = 1500;
-    (function tick(now) {
-      const p = clamp((now - t0) / dur, 0, 1);
-      const v = Math.round(easeOut(p) * 100);
-      num.textContent = String(v).padStart(2, '0');
-      bar.style.width = v + '%';
-      if (p < 1) requestAnimationFrame(tick); else setTimeout(finishLoad, 200);
-    })(t0);
-  }
+  if (reduced) start(); else { html.classList.add('lock'); setTimeout(start, 1500); }
 
-  /* ---------- smooth scroll (wheel only, fine pointers) ---------- */
-  let targetY = window.scrollY, currentY = targetY, lastSet = targetY, smoothing = false;
-  if (fine && !reduced) {
-    smoothing = true;
-    const maxY = () => document.documentElement.scrollHeight - window.innerHeight;
-    window.addEventListener('wheel', e => {
-      if (e.ctrlKey) return;
-      if (e.target.closest && e.target.closest('.gallery')) return;
-      e.preventDefault();
-      const mult = e.deltaMode === 1 ? 32 : e.deltaMode === 2 ? window.innerHeight : 1;
-      targetY = clamp(targetY + e.deltaY * mult, 0, maxY());
-    }, { passive: false });
-    window.addEventListener('scroll', () => {
-      if (Math.abs(window.scrollY - lastSet) > 1.5) { targetY = currentY = lastSet = window.scrollY; }
-    }, { passive: true });
-  }
-
-  /* ---------- cursor ---------- */
-  const cursor = $('.cursor');
-  let mx = window.innerWidth / 2, my = window.innerHeight / 2, rx = mx, ry = my;
-  if (fine && !reduced) {
-    document.body.classList.add('has-cursor');
-    const dot = $('.cur-dot'), ring = $('.cur-ring'), label = $('.cur-ring span');
-    window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; }, { passive: true });
-    document.addEventListener('mouseover', e => {
-      const t = e.target.closest('a, button, [data-cursor], label, summary');
-      if (!t) { cursor.classList.remove('hover', 'link'); return; }
-      const txt = t.dataset.cursor !== undefined ? t.dataset.cursor : '';
-      label.textContent = txt;
-      cursor.classList.toggle('hover', txt !== '');
-      cursor.classList.toggle('link', txt === '');
-    });
-    window.cursorFrame = () => {
-      rx = lerp(rx, mx, .18); ry = lerp(ry, my, .18);
-      dot.style.transform = `translate(${mx}px, ${my}px)`;
-      ring.style.transform = `translate(${rx}px, ${ry}px)`;
-    };
-  }
-
-  /* ---------- magnetic buttons ---------- */
-  if (fine && !reduced) $$('.magnetic').forEach(el => {
-    el.addEventListener('mousemove', e => {
-      const r = el.getBoundingClientRect();
-      const x = e.clientX - (r.left + r.width / 2), y = e.clientY - (r.top + r.height / 2);
-      el.style.transform = `translate(${x * .25}px, ${y * .35}px)`;
-    });
-    el.addEventListener('mouseleave', () => { el.style.transition = 'transform .6s cubic-bezier(.16,1,.3,1)'; el.style.transform = ''; setTimeout(() => el.style.transition = '', 600); });
-  });
-
-  /* ---------- tilt cards + spotlight ---------- */
-  if (fine && !reduced) {
-    $$('.tilt').forEach(card => {
-      card.addEventListener('mousemove', e => {
-        const r = card.getBoundingClientRect();
-        const px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
-        card.style.setProperty('--mx', (px * 100) + '%');
-        card.style.setProperty('--my', (py * 100) + '%');
-        card.style.transform = `rotateY(${(px - .5) * 10}deg) rotateX(${(.5 - py) * 10}deg)`;
-      });
-      card.addEventListener('mouseleave', () => { card.style.transform = ''; });
-    });
-    $$('.spot').forEach(s => s.addEventListener('mousemove', e => {
-      const r = s.getBoundingClientRect();
-      s.style.setProperty('--mx', (e.clientX - r.left) + 'px');
-      s.style.setProperty('--my', (e.clientY - r.top) + 'px');
-    }));
-  }
-
-  /* ---------- nav ---------- */
-  const nav = $('#nav');
-  let lastY = 0;
-  const burger = $('#burger'), mm = $('#mobileMenu');
-  burger.addEventListener('click', () => {
-    const open = mm.classList.toggle('open');
-    burger.classList.toggle('open', open);
-    burger.setAttribute('aria-expanded', open);
-    html.classList.toggle('lock', open);
-  });
-  mm.addEventListener('click', e => { if (e.target.tagName === 'A') burger.click(); });
-  const sections = $$('main section[id]');
-  const menuLinks = $$('.menu-pill a');
-
-  /* ---------- reveals + counters ---------- */
+  /* ---------- reveals ---------- */
   const io = new IntersectionObserver(entries => entries.forEach(en => {
     if (!en.isIntersecting) return;
     en.target.classList.add('in');
-    if (en.target.dataset.count) countUp(en.target);
+    if (en.target.dataset.count !== undefined) countUp(en.target);
     io.unobserve(en.target);
   }), { threshold: .15 });
-  $$('.rv:not(.hero .rv), [data-count]').forEach(el => io.observe(el));
+  $$('.rv:not(.hero .rv), [data-split]:not(h1), [data-count], #hub').forEach(el => io.observe(el));
   function countUp(el) {
     const target = +el.dataset.count, t0 = performance.now();
     (function tick(now) {
@@ -141,195 +85,159 @@
     })(t0);
   }
 
-  /* ---------- manifesto words ---------- */
-  const mText = $('#manifestoText');
-  const highlights = ['factory.', 'factory:', 'CASSIE', 'shelf,'];
-  mText.innerHTML = mText.textContent.trim().split(/\s+/).map(w => `<span class="w${highlights.includes(w) ? ' hl' : ''}">${w}</span>`).join(' ');
-  const words = $$('.w', mText);
-  const manifesto = $('#manifesto');
+  /* ---------- nav ---------- */
+  const nav = $('#nav'), burger = $('#burger'), mm = $('#mobileMenu');
+  let lastY = 0;
+  burger.addEventListener('click', () => {
+    const open = mm.classList.toggle('open');
+    burger.classList.toggle('open', open);
+    burger.setAttribute('aria-expanded', open);
+    html.classList.toggle('lock', open);
+  });
+  mm.addEventListener('click', e => { if (e.target.tagName === 'A') burger.click(); });
+  const sections = $$('main section[id]');
+  const menuLinks = $$('.menu a');
 
-  /* ---------- hero video rotation ---------- */
-  const films = [
-    { src: 'https://www.cassieperfumes.com/wp-content/uploads/2026/01/Cassie_Africa-couture_2.mp4', name: 'Africa Couture · brand film' },
-    { src: 'https://www.cassieperfumes.com/wp-content/uploads/2026/01/Amor-Loco.mp4', name: 'Amor Loco · brand film' },
-    { src: 'https://www.cassieperfumes.com/wp-content/uploads/2026/01/MOTION-01_Swave_V22.mp4', name: 'Swave · brand film' },
-    { src: 'https://www.cassieperfumes.com/wp-content/uploads/2026/01/Casie-Xtream_2.mp4', name: 'Xtreme · brand film' },
-    { src: 'https://www.cassieperfumes.com/wp-content/uploads/2026/01/Cassie-El-Hombre.mp4', name: 'El Hombre · brand film' }
-  ];
-  const hv = $$('.hero-media video');
-  const filmName = $('#filmName');
-  let filmIdx = 0, activeV = 0, filmsOk = true;
-  function playFilm(i, slot) {
-    const v = hv[slot];
-    if (!films.length) { filmName.textContent = 'CASSIE · atelier'; return; }
-    const f = films[i % films.length];
-    v.src = f.src; v.load();
-    const onErr = () => { films.splice(i % films.length, 1); if (!films.length) { filmsOk = false; filmName.textContent = 'CASSIE · atelier'; } else playFilm(i, slot); };
-    v.onerror = onErr;
-    v.onplaying = () => { hv.forEach(x => x.classList.remove('on')); v.classList.add('on'); filmName.textContent = f.name; };
-    v.play().catch(() => {});
-  }
-  if (!reduced) {
-    playFilm(0, 0);
-    setInterval(() => {
-      if (!films.length || document.hidden) return;
-      filmIdx++; activeV = 1 - activeV;
-      playFilm(filmIdx, activeV);
-    }, 9000);
-  }
+  /* ---------- aura canvas ---------- */
+  const canvas = $('#aura'), ctx = canvas.getContext('2d');
+  let W, H, DPR = 0.5;
+  const resize = () => { W = canvas.width = Math.floor(innerWidth * DPR); H = canvas.height = Math.floor(innerHeight * DPR); };
+  resize(); addEventListener('resize', resize);
+  const blobs = [];
+  for (let i = 0; i < 5; i++) blobs.push({ x: .2 + Math.random() * .6, y: .2 + Math.random() * .6, r: .32 + Math.random() * .22, sx: (.00006 + Math.random() * .00008), sy: (.00005 + Math.random() * .00008), a: Math.random() * 6.28, b: Math.random() * 6.28, ci: i % 4 });
+  const trail = [];
+  let mx = -1, my = -1, lastEmit = 0;
+  if (fine && !reduced) addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    const now = performance.now();
+    if (now - lastEmit > 28) { lastEmit = now; trail.push({ x: mx, y: my, t: now, ci: (trail.length) % 4, vx: (Math.random() - .5) * .04, vy: -.03 - Math.random() * .04 }); if (trail.length > 36) trail.shift(); }
+  }, { passive: true });
 
-  /* ---------- zoom video ---------- */
-  const zoomVideo = $('#zoomVideo');
-  if (!reduced) {
-    zoomVideo.src = 'https://www.cassieperfumes.com/wp-content/uploads/2026/01/XCALIBUR-1.mp4';
-    zoomVideo.onplaying = () => zoomVideo.classList.add('on');
-    zoomVideo.onerror = () => zoomVideo.remove();
-  }
-
-  /* ---------- mist canvases ---------- */
-  function mist(canvas, palette) {
-    const ctx = canvas.getContext('2d');
-    let w, h, blobs = [];
-    const resize = () => { w = canvas.width = Math.floor(canvas.clientWidth / 2); h = canvas.height = Math.floor(canvas.clientHeight / 2); };
-    resize(); window.addEventListener('resize', resize);
-    for (let i = 0; i < 9; i++) blobs.push({ x: Math.random(), y: Math.random(), r: .25 + Math.random() * .35, s: .00008 + Math.random() * .00012, a: Math.random() * 6.28, c: palette[i % palette.length] });
-    return function (t, visible) {
-      if (!visible) return;
-      ctx.fillStyle = '#050505'; ctx.fillRect(0, 0, w, h);
-      ctx.globalCompositeOperation = 'lighter';
-      blobs.forEach(b => {
-        const x = (b.x + Math.sin(t * b.s + b.a) * .25) * w, y = (b.y + Math.cos(t * b.s * 1.3 + b.a) * .25) * h, r = b.r * Math.max(w, h);
-        const g = ctx.createRadialGradient(x, y, 0, x, y, r);
-        g.addColorStop(0, b.c); g.addColorStop(1, 'rgba(0,0,0,0)');
-        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, r, 0, 6.283); ctx.fill();
-      });
-      ctx.globalCompositeOperation = 'source-over';
-    };
-  }
-  const heroMist = mist($('#mist'), ['rgba(120,70,30,.5)', 'rgba(60,40,30,.6)', 'rgba(140,100,50,.35)', 'rgba(40,30,30,.6)']);
-  const zoomMist = mist($('#zoomMist'), ['rgba(150,95,45,.55)', 'rgba(80,60,55,.6)', 'rgba(170,120,60,.4)', 'rgba(60,45,40,.6)']);
-
-  /* ---------- scroll scenes ---------- */
-  const heroMedia = $('#heroMedia'), heroContent = $('#heroContent'), hero = $('#hero');
-  const hs = $('#services'), hsTrack = $('#hsTrack'), hsProg = $('#hsProgress');
-  const zoom = $('#zoom'), zoomFrame = $('#zoomFrame'), zoomText = $('#zoomText');
-  const cards = $$('.card'), progressBar = $('#progressBar');
-  const gallery = $('#gallery');
-
-  function sceneProgress(el) {
-    const r = el.getBoundingClientRect();
-    return clamp(-r.top / (r.height - window.innerHeight), 0, 1);
-  }
-
-  let vh = window.innerHeight;
-  window.addEventListener('resize', () => { vh = window.innerHeight; });
-
-  function frame(now) {
-    // smooth scroll
-    if (smoothing) {
-      currentY = lerp(currentY, targetY, .085);
-      if (Math.abs(currentY - targetY) < .3) currentY = targetY;
-      const y = Math.round(currentY * 100) / 100;
-      if (Math.abs(y - window.scrollY) > .05) { lastSet = y; window.scrollTo(0, y); }
-    }
-    const y = window.scrollY;
-
-    // nav
-    nav.classList.toggle('scrolled', y > 40);
-    nav.classList.toggle('hide', y > lastY + 4 && y > 300 && !mm.classList.contains('open'));
-    if (Math.abs(y - lastY) > 4) lastY = y;
-    progressBar.style.width = (y / (document.documentElement.scrollHeight - vh) * 100) + '%';
-
-    // hero parallax
-    const hp = clamp(y / vh, 0, 1);
-    if (hp < 1.01) {
-      heroMedia.style.transform = `scale(${1 + hp * .18}) translateY(${hp * 10}%)`;
-      heroContent.style.transform = `translateY(${hp * -80}px)`;
-      heroContent.style.opacity = 1 - hp * 1.4;
-    }
-    heroMist(now, hp < 1 && !filmsOk);
-
-    // manifesto words
-    if (!mobile()) {
-      const mp = sceneProgress(manifesto);
-      const n = words.length;
-      words.forEach((w, i) => { w.style.opacity = clamp((mp * 1.15 * n - i) * .8 + .12, .12, 1); });
-    }
-
-    // horizontal services
-    if (!mobile()) {
-      const p = sceneProgress(hs);
-      const dist = hsTrack.scrollWidth - window.innerWidth;
-      hsTrack.style.transform = `translate3d(${-p * dist}px,0,0)`;
-      hsProg.style.width = (p * 100) + '%';
-    }
-
-    // zoom film
-    const zp = sceneProgress(zoom);
-    const zr = zoom.getBoundingClientRect();
-    if (zr.bottom > 0 && zr.top < vh) {
-      const t = easeOut(clamp(zp / .55, 0, 1));
-      const base = mobile() ? .6 : .32;
-      zoomFrame.style.transform = `scale(${base + (1 - base) * t})`;
-      zoomFrame.style.borderRadius = (32 * (1 - t)) + 'px';
-      const tp = clamp((zp - .6) / .25, 0, 1);
-      zoomText.style.opacity = tp;
-      zoomText.style.transform = `translateY(${(1 - tp) * 30}px)`;
-      zoomMist(now, !zoomVideo.classList.contains('on'));
-      if (zoomVideo.paused && zoomVideo.src) zoomVideo.play().catch(() => {});
-    }
-
-    // card stack
-    cards.forEach((c, i) => {
-      const next = cards[i + 1];
-      if (!next) return;
-      const nr = next.getBoundingClientRect();
-      const q = clamp((vh * .95 - nr.top) / (vh * .6), 0, 1);
-      c.style.transform = `scale(${1 - q * .06})`;
-      c.style.filter = `brightness(${1 - q * .55})`;
+  function drawAura(now) {
+    ctx.clearRect(0, 0, W, H);
+    const light = THEMES[curTheme].light;
+    ctx.globalCompositeOperation = light ? 'multiply' : 'lighter';
+    blobs.forEach(b => {
+      const x = (b.x + Math.sin(now * b.sx + b.a) * .22) * W, y = (b.y + Math.cos(now * b.sy + b.b) * .22) * H, r = b.r * Math.max(W, H);
+      const c = cur.orbs[b.ci];
+      const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+      g.addColorStop(0, `rgba(${c[0] | 0},${c[1] | 0},${c[2] | 0},${light ? .55 : .42})`);
+      g.addColorStop(1, `rgba(${c[0] | 0},${c[1] | 0},${c[2] | 0},0)`);
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, r, 0, 6.283); ctx.fill();
     });
-
-    // active menu
-    let active = null;
-    sections.forEach(s => { if (s.getBoundingClientRect().top <= vh * .4) active = s.id; });
-    menuLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + active));
-
-    if (window.cursorFrame) window.cursorFrame();
-    requestAnimationFrame(frame);
+    // scent trail
+    for (let i = trail.length - 1; i >= 0; i--) {
+      const p = trail[i], age = (now - p.t) / 1500;
+      if (age > 1) { trail.splice(i, 1); continue; }
+      const c = cur.orbs[p.ci];
+      const r = (40 + age * 110) * DPR, x = (p.x + p.vx * (now - p.t)) * DPR, y = (p.y + p.vy * (now - p.t)) * DPR;
+      const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+      g.addColorStop(0, `rgba(${c[0] | 0},${c[1] | 0},${c[2] | 0},${(1 - age) * (light ? .35 : .45)})`);
+      g.addColorStop(1, `rgba(${c[0] | 0},${c[1] | 0},${c[2] | 0},0)`);
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, r, 0, 6.283); ctx.fill();
+    }
+    ctx.globalCompositeOperation = 'source-over';
   }
-  requestAnimationFrame(frame);
 
-  /* ---------- anchor links with smooth scroll ---------- */
-  document.addEventListener('click', e => {
-    const a = e.target.closest('a[href^="#"]');
-    if (!a || a.getAttribute('href') === '#') return;
-    const el = $(a.getAttribute('href'));
-    if (!el) return;
-    e.preventDefault();
-    const top = el.getBoundingClientRect().top + window.scrollY;
-    if (smoothing) { targetY = top; }
-    else window.scrollTo({ top, behavior: reduced ? 'auto' : 'smooth' });
+  /* ---------- hero parallax + liquid wave ---------- */
+  const stage = $('#heroStage');
+  const layers = $$('[data-depth]', stage);
+  let px = 0, py = 0, tx = 0, ty = 0;
+  if (fine && !reduced) addEventListener('mousemove', e => { tx = (e.clientX / innerWidth - .5); ty = (e.clientY / innerHeight - .5); }, { passive: true });
+  const heroLiquid = $('#heroBottle .liquid');
+  const heroLiquidTop = heroLiquid ? +heroLiquid.getAttribute('y') : 0;
+  if (heroLiquid) {
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('fill', heroLiquid.getAttribute('fill'));
+    heroLiquid.replaceWith(path);
+    window.__wave = path;
+  }
+
+  /* ---------- services rows ---------- */
+  const rows = $$('.row');
+  rows.forEach(r => {
+    const head = $('.row-head', r);
+    const open = () => { rows.forEach(x => x.classList.toggle('open', x === r)); };
+    head.addEventListener('click', open);
+    if (fine) head.addEventListener('mouseenter', open);
   });
 
-  /* ---------- export peek ---------- */
-  const peek = $('#peek'), peekItems = $$('.peek-item');
-  if (fine) {
-    let px = 0, py = 0;
-    $$('#regions li').forEach(li => {
-      li.addEventListener('mouseenter', () => { peek.classList.add('on'); peekItems.forEach((p, i) => p.classList.toggle('on', i === +li.dataset.peek)); });
-      li.addEventListener('mouseleave', () => peek.classList.remove('on'));
-    });
-    $('#regions').addEventListener('mousemove', e => { px = e.clientX + 60; py = e.clientY; peek.style.left = px + 'px'; peek.style.top = py + 'px'; });
+  /* ---------- fragrance families ---------- */
+  const FAM = [
+    { name: 'Oud & Woody', c1: '#e2962a', c2: '#5a1f0e', glass: 'noir', liquid: '#3a1d0c', cap: 'block', capColor: 'gold', desc: 'Resinous, smoky and long-lasting. The signature of the Gulf, now in demand far beyond it.', accords: ['Agarwood', 'Sandalwood', 'Cedar', 'Patchouli', 'Saffron', 'Leather'], markets: ['GCC', 'Africa', 'Latin America'] },
+    { name: 'Amber & Oriental', c1: '#ffd98a', c2: '#a0501e', glass: 'amber', liquid: '#b8742c', cap: 'dome', capColor: 'gold', desc: 'Warm, sweet and enveloping. Vanilla, resins and spice built for evening wear and gifting.', accords: ['Amber', 'Vanilla', 'Benzoin', 'Labdanum', 'Tonka', 'Cinnamon'], markets: ['GCC', 'Far East', 'North America'] },
+    { name: 'Floral', c1: '#ffb4c8', c2: '#b0305e', glass: 'rose', liquid: '#f0a9a0', cap: 'crystal', capColor: 'rosegold', desc: 'From a single rose soliflore to lush white-flower bouquets. The broadest-selling family worldwide.', accords: ['Rose', 'Jasmine', 'Tuberose', 'Peony', 'Iris', 'Ylang-ylang'], markets: ['North America', 'Latin America', 'Far East'] },
+    { name: 'Gourmand', c1: '#ffcf9a', c2: '#7a3e18', glass: 'crystal', liquid: '#8a4a1c', cap: 'sphere', capColor: 'rosegold', desc: 'Edible, playful and addictive. Caramel, chocolate and praline profiles that drive repeat purchase.', accords: ['Caramel', 'Praline', 'Chocolate', 'Coffee', 'Pistachio', 'Milk'], markets: ['GCC', 'Far East', 'Latin America'] },
+    { name: 'Fresh & Citrus', c1: '#d9ff9a', c2: '#1f7a6a', glass: 'crystal', liquid: '#cfe88a', cap: 'disc', capColor: 'silver', desc: 'Bright, clean and easy to wear. Colognes, aquatics and green florals for daytime and hot climates.', accords: ['Bergamot', 'Lemon', 'Neroli', 'Marine', 'Green tea', 'Vetiver'], markets: ['North America', 'Far East', 'GCC'] },
+    { name: 'Musk & Skin', c1: '#fff0dc', c2: '#9a7a6a', glass: 'frosted', liquid: '#efe3cf', cap: 'tall', capColor: 'white', desc: 'Soft, clean and intimate. Modern musks that read as "skin but better", ideal for minimalist brands.', accords: ['White musk', 'Ambrette', 'Cashmeran', 'Iris', 'Cotton', 'Sandalwood'], markets: ['North America', 'Far East', 'GCC'] }
+  ];
+  const ring = $('#famRing'), orb = $('#famOrb'), famBottle = $('#famBottle'), famCard = $('#famCard');
+  FAM.forEach((f, i) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.textContent = f.name; b.style.setProperty('--a', (-90 + i * 60) + 'deg');
+    b.addEventListener('click', () => setFam(i));
+    ring.appendChild(b);
+  });
+  function setFam(i) {
+    const f = FAM[i];
+    $$('button', ring).forEach((b, n) => b.classList.toggle('on', n === i));
+    orb.style.setProperty('--c1', f.c1); orb.style.setProperty('--c2', f.c2);
+    famBottle.innerHTML = window.bottleSVG({ shape: ['facet', 'orb', 'orb', 'flacon', 'tall', 'column'][i], cap: f.cap, capColor: f.capColor, glass: f.glass, liquid: f.liquid, label: f.name.split(' ')[0].toUpperCase(), sub: 'EAU DE PARFUM', labelColor: f.glass === 'noir' ? '#e2c58c' : (f.glass === 'frosted' ? '#6a5a50' : '#fff'), reflect: true });
+    famBottle.classList.remove('swap'); void famBottle.offsetWidth; famBottle.classList.add('swap');
+    $('#famName').textContent = f.name;
+    $('#famDesc').textContent = f.desc;
+    $('#famAccords').innerHTML = f.accords.map(a => `<i>${a}</i>`).join('');
+    $('#famMarkets').innerHTML = f.markets.map(a => `<i>${a}</i>`).join('');
+    famCard.classList.remove('swap'); void famCard.offsetWidth; famCard.classList.add('swap');
   }
+  setFam(0);
 
-  /* ---------- gallery drag ---------- */
-  let dragging = false, startX = 0, startLeft = 0, moved = false;
-  gallery.addEventListener('pointerdown', e => { if (e.pointerType === 'touch') return; dragging = true; moved = false; startX = e.clientX; startLeft = gallery.scrollLeft; gallery.classList.add('dragging'); gallery.setPointerCapture(e.pointerId); });
-  gallery.addEventListener('pointermove', e => { if (!dragging) return; const dx = e.clientX - startX; if (Math.abs(dx) > 4) moved = true; gallery.scrollLeft = startLeft - dx; });
-  const endDrag = () => { dragging = false; gallery.classList.remove('dragging'); };
-  gallery.addEventListener('pointerup', endDrag); gallery.addEventListener('pointercancel', endDrag);
-  gallery.addEventListener('click', e => { if (moved) e.preventDefault(); }, true);
-  gallery.addEventListener('wheel', e => { if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return; gallery.scrollLeft += e.deltaY; e.preventDefault(); }, { passive: false });
+  /* ---------- process line ---------- */
+  const tlPath = $('#tlPath'), tlLen = tlPath.getTotalLength();
+  tlPath.style.strokeDasharray = tlLen; tlPath.style.strokeDashoffset = tlLen;
+  const timeline = $('.timeline');
+
+  /* ---------- packaging configurator ---------- */
+  const render = $('#packRender'), caption = $('#packCaption'), labelInput = $('#packLabel');
+  const state = { shape: 'facet', cap: 'block', capColor: 'gold', glass: 'noir', label: 'YOUR BRAND', sub: 'EAU DE PARFUM', liquid: '#2a1c10', reflect: true };
+  const liquids = { noir: '#2a1c10', crystal: '#e8c47e', clear: '#e8c47e', frosted: '#e9dcc2', amber: '#9b531c', smoke: '#5a4a3a', rose: '#f0b4aa', violet: '#8a62c8', emerald: '#2f8a6a' };
+  const names = {
+    shape: { facet: 'Facet', flacon: 'Flacon', tall: 'Tall', column: 'Column', orb: 'Orb', slim: 'Slim' },
+    cap: { block: 'zamac block cap', tall: 'tower cap', dome: 'dome cap', sphere: 'sphere cap', crystal: 'crystal cap', disc: 'disc cap' },
+    capColor: { gold: 'Gold', silver: 'Silver', black: 'Matte black', rosegold: 'Rose gold', wood: 'Wood', white: 'White' },
+    glass: { noir: 'noir lacquer', crystal: 'crystal clear', frosted: 'frosted', amber: 'amber', smoke: 'smoke', rose: 'blush', violet: 'violet', emerald: 'emerald' }
+  };
+  const describe = () => `${names.shape[state.shape]} bottle · ${names.capColor[state.capColor]} ${names.cap[state.cap]} · ${names.glass[state.glass]} glass`;
+  function draw() {
+    state.liquid = liquids[state.glass];
+    state.labelColor = (state.glass === 'noir' || state.glass === 'smoke') ? '#e2c58c' : '#2a1c14';
+    render.innerHTML = window.bottleSVG(state);
+    render.classList.remove('swap'); void render.offsetWidth; render.classList.add('swap');
+    caption.textContent = describe();
+  }
+  $$('.opts').forEach(group => group.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    $$('button', group).forEach(x => x.classList.remove('on')); b.classList.add('on');
+    state[group.dataset.key] = b.dataset.val; draw();
+  }));
+  labelInput.addEventListener('input', () => { state.label = (labelInput.value.trim() || 'YOUR BRAND').toUpperCase(); draw(); });
+  draw();
+  $('#packToRfq').addEventListener('click', () => { $('#packField').value = `Configuration: ${describe()}. Label: ${state.label}.`; });
+
+  /* ---------- export hub lines ---------- */
+  const hub = $('#hub'), hubLines = $('#hubLines');
+  function drawHub() {
+    const r = hub.getBoundingClientRect();
+    hubLines.setAttribute('viewBox', `0 0 ${r.width} ${r.height}`);
+    const nodes = $$('.node', hub), c = $('.node.center', hub);
+    const cx = r.width * .5, cy = r.height * .52;
+    hubLines.innerHTML = nodes.filter(n => n !== c).map(n => {
+      const x = parseFloat(n.style.getPropertyValue('--x')) / 100 * r.width, y = parseFloat(n.style.getPropertyValue('--y')) / 100 * r.height;
+      const mx = (cx + x) / 2 + (y - cy) * .18, my = (cy + y) / 2 - (x - cx) * .18;
+      return `<path d="M${cx} ${cy} Q${mx} ${my} ${x} ${y}"/>`;
+    }).join('');
+  }
+  drawHub(); addEventListener('resize', drawHub);
 
   /* ---------- RFQ demo ---------- */
   const form = $('#rfqForm');
@@ -338,11 +246,62 @@
     let ok = true;
     $$('[required]', form).forEach(f => {
       const bad = !f.value.trim() || (f.type === 'email' && !/^\S+@\S+\.\S+$/.test(f.value));
-      f.classList.toggle('invalid', bad);
-      if (bad) ok = false;
+      f.classList.toggle('invalid', bad); if (bad) ok = false;
     });
     if (!ok) return;
     Array.from(form.children).forEach(c => { if (!c.classList.contains('f-done')) c.style.display = 'none'; });
     $('.f-done', form).hidden = false;
+  });
+
+  /* ---------- frame loop ---------- */
+  let vh = innerHeight; addEventListener('resize', () => { vh = innerHeight; });
+  function frame(now) {
+    const y = scrollY;
+
+    // theme by section at viewport centre
+    let t = curTheme;
+    for (const s of themed) { const r = s.getBoundingClientRect(); if (r.top <= vh * .5 && r.bottom > vh * .5) { t = s.dataset.theme; break; } }
+    if (t !== curTheme) { curTheme = t; document.body.classList.toggle('light', THEMES[t].light); }
+    const T = THEMES[curTheme], k = reduced ? 1 : .075;
+    for (let i = 0; i < 3; i++) { cur.bg[i] = lerp(cur.bg[i], T.bg[i], k); cur.fg[i] = lerp(cur.fg[i], T.fg[i], k); }
+    cur.orbs.forEach((o, n) => { for (let i = 0; i < 3; i++) o[i] = lerp(o[i], T.orbs[n][i], k); });
+    html.style.setProperty('--bg', rgb(cur.bg)); html.style.setProperty('--fg', rgb(cur.fg));
+    drawAura(now);
+
+    // nav hide/show + active link
+    nav.classList.toggle('hide', y > lastY + 4 && y > 300 && !mm.classList.contains('open'));
+    if (Math.abs(y - lastY) > 4) lastY = y;
+    let active = null;
+    sections.forEach(s => { if (s.getBoundingClientRect().top <= vh * .4) active = s.id; });
+    menuLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + active));
+
+    // hero parallax
+    px = lerp(px, tx, .06); py = lerp(py, ty, .06);
+    layers.forEach(l => { const d = +l.dataset.depth; l.style.setProperty('--px', (px * 40 * d) + 'px'); l.style.setProperty('--py', (py * 30 * d) + 'px'); });
+    // liquid wave in hero bottle
+    if (window.__wave && y < vh && !reduced) {
+      const top = heroLiquidTop, amp = 2.2 + Math.abs(px) * 10, ph = now * .0025;
+      let d = `M0 ${top + Math.sin(ph) * amp}`;
+      for (let x = 10; x <= 200; x += 10) d += ` L${x} ${(top + Math.sin(ph + x * .045) * amp + Math.sin(ph * 1.7 + x * .02) * amp * .5).toFixed(2)}`;
+      d += ' L200 320 L0 320 Z';
+      window.__wave.setAttribute('d', d);
+    }
+
+    // process line scrub
+    const tr = timeline.getBoundingClientRect();
+    const tp = clamp((vh * .85 - tr.top) / (tr.height * .9), 0, 1);
+    tlPath.style.strokeDashoffset = tlLen * (1 - easeOut(tp));
+
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  /* ---------- anchors ---------- */
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a[href^="#"]');
+    if (!a || a.getAttribute('href') === '#') return;
+    const el = $(a.getAttribute('href')); if (!el) return;
+    e.preventDefault();
+    window.scrollTo({ top: el.getBoundingClientRect().top + scrollY, behavior: reduced ? 'auto' : 'smooth' });
   });
 })();

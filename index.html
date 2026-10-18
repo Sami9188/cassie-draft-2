@@ -3,34 +3,26 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CASSIE Perfumes — The House Behind the Brands | Perfume Contract Manufacturer, Dubai</title>
+  <title>CASSIE Perfumes — Perfume Contract Manufacturer &amp; Private Label Partner, Dubai</title>
   <meta name="description" content="CASSIE Perfumes is a Dubai perfume manufacturer offering OEM, ODM, private label and bulk fragrance supply, with bottle and packaging customisation for brands worldwide.">
-  <meta name="theme-color" content="#050505">
+  <meta name="theme-color" content="#160b1d">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- Preloader -->
-<div class="loader" id="loader" aria-hidden="true">
-  <div class="loader-brand">CASSIE</div>
-  <div class="loader-num"><span id="loaderNum">00</span></div>
-  <div class="loader-bar"><i id="loaderBar"></i></div>
-</div>
+<div class="loader" id="loader" aria-hidden="true"><span class="loader-word">C<i>A</i>SSIE</span><span class="loader-line"><i></i></span></div>
 
-<!-- Chrome -->
-<div class="grain" aria-hidden="true"></div>
-<div class="cursor" aria-hidden="true"><div class="cur-dot"></div><div class="cur-ring"><span></span></div></div>
-<div class="progress" aria-hidden="true"><i id="progressBar"></i></div>
-<div class="draft-flag">Draft 2 · Motion · <a href="https://sami9188.github.io/cassie-draft-1/">View Draft 1 →</a></div>
+<canvas id="aura" aria-hidden="true"></canvas>
+<div class="draft-flag">Draft 2 · Spectrum · <a href="https://sami9188.github.io/cassie-draft-1/">View Draft 1 →</a></div>
 
-<!-- Nav -->
 <header class="nav" id="nav">
-  <a href="#top" class="brand" aria-label="CASSIE Perfumes">CASSIE</a>
-  <nav class="menu-pill">
+  <a href="#hero" class="brand" aria-label="CASSIE Perfumes">CASSIE</a>
+  <nav class="menu">
     <a href="#services">Manufacturing</a>
+    <a href="#families">Fragrance</a>
     <a href="#process">Process</a>
     <a href="#packaging">Packaging</a>
     <a href="#quality">Quality</a>
@@ -38,351 +30,279 @@
     <a href="#collection" class="dim">Shop</a>
   </nav>
   <div class="nav-right">
-    <a href="https://wa.me/97167433100" class="nav-wa" target="_blank" rel="noopener" data-cursor="Chat">WhatsApp</a>
-    <a href="#rfq" class="pill pill-light magnetic" data-cursor="">Get a quote</a>
+    <a href="https://wa.me/97167433100" class="nav-link" target="_blank" rel="noopener">WhatsApp</a>
+    <a href="#rfq" class="btn btn-solid">Get a quote</a>
     <button class="burger" id="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span></button>
   </div>
 </header>
-
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#services">Manufacturing</a>
-  <a href="#process">Process</a>
-  <a href="#packaging">Packaging</a>
-  <a href="#quality">Quality</a>
-  <a href="#export">Export</a>
-  <a href="#collection">Shop CASSIE</a>
+  <a href="#services">Manufacturing</a><a href="#families">Fragrance</a><a href="#process">Process</a><a href="#packaging">Packaging</a><a href="#quality">Quality</a><a href="#export">Export</a><a href="#collection">Shop CASSIE</a>
   <a href="#rfq" class="mm-cta">Get a quote →</a>
   <p>+971 6 743 3100 · info@cassieperfumes.com · Dubai, UAE</p>
 </div>
 
-<main id="top">
+<main>
 
 <!-- ================= HERO ================= -->
-<section class="hero" id="hero">
-  <div class="hero-media" id="heroMedia">
-    <canvas id="mist"></canvas>
-    <video class="hv" muted playsinline loop preload="auto"></video>
-    <video class="hv" muted playsinline loop preload="auto"></video>
-    <div class="hero-shade"></div>
-  </div>
-  <div class="hero-content" id="heroContent">
-    <div class="hero-kicker rv"><span>Perfume manufacturer</span><span class="dot"></span><span>Dubai, United Arab Emirates</span></div>
-    <h1 class="hero-title">
-      <span class="line"><span style="--i:0">The house</span></span>
-      <span class="line"><span style="--i:1">behind the</span></span>
-      <span class="line"><span style="--i:2" class="it">brands.</span></span>
+<section class="hero" id="hero" data-theme="plum">
+  <div class="hero-copy">
+    <p class="kicker rv">OEM · ODM · Private label · Bulk export · Dubai</p>
+    <h1 class="display" data-split>
+      <span class="l">Fragrance,</span>
+      <span class="l">manufactured</span>
+      <span class="l it">beautifully.</span>
     </h1>
-    <div class="hero-row rv">
-      <p class="hero-sub">CASSIE formulates, macerates, fills and finishes fine fragrance for brand owners, importers and retailers on four continents. One partner from brief to export.</p>
-      <div class="hero-ctas">
-        <a href="#rfq" class="pill pill-light magnetic">Request a quotation</a>
-        <a href="#services" class="pill pill-ghost magnetic">What we make</a>
-      </div>
+    <p class="lede rv">CASSIE develops, fills and finishes perfume for brand owners, importers and retailers worldwide, and makes its own collection on the same lines.</p>
+    <div class="ctas rv">
+      <a href="#rfq" class="btn btn-solid big">Request a quotation</a>
+      <a href="#services" class="btn btn-glass big">See what we make</a>
     </div>
   </div>
-  <div class="hero-foot">
-    <div class="scroll-ind"><i></i><span>Scroll</span></div>
-    <ul class="hero-tags"><li>OEM</li><li>ODM</li><li>Private label</li><li>Bulk oils</li><li>Export</li></ul>
-    <div class="film-tag"><i></i><span id="filmName">CASSIE brand film</span></div>
+  <div class="hero-stage" id="heroStage">
+    <div class="hcard hc-l" data-depth="0.6"><div class="hcard-in"><img src="https://www.cassieperfumes.com/wp-content/uploads/2025/08/perfume-8-1.png" alt="Amor Loco by CASSIE" data-fallback='{"shape":"orb","cap":"crystal","capColor":"rosegold","glass":"rose","liquid":"#f0a9a0","label":"AMOR LOCO","reflect":true}'></div><span>Amor Loco</span></div>
+    <div class="hcard hc-c" data-depth="1"><div class="hcard-in" id="heroBottle" data-bottle='{"shape":"facet","cap":"block","capColor":"gold","glass":"noir","liquid":"#2a1c10","label":"YOUR BRAND","sub":"EAU DE PARFUM","reflect":true}'></div><span>Your brand, made here</span></div>
+    <div class="hcard hc-r" data-depth="0.75"><div class="hcard-in"><img src="https://www.cassieperfumes.com/wp-content/uploads/2025/07/AFRICA-COUTURE.png" alt="Africa Couture by CASSIE" data-fallback='{"shape":"column","cap":"tall","capColor":"gold","glass":"amber","liquid":"#b06a2a","label":"AFRICA","reflect":true}'></div><span>Africa Couture</span></div>
+    <div class="chip ch1" data-depth="1.4">Private label</div>
+    <div class="chip ch2" data-depth="1.2">OEM / ODM</div>
+    <div class="chip ch3" data-depth="1.6">Export-ready</div>
+  </div>
+  <div class="hero-strip">
+    <div><b data-count="40">0</b><sup>+</sup><span>fragrances in our own house</span></div>
+    <div><b data-count="120">0</b><sup>+</sup><span>bottle, cap &amp; finish combinations</span></div>
+    <div><b data-count="1000">0</b><span>units, indicative private label MOQ</span></div>
+    <div><b data-count="5">0</b><span>export regions in focus</span></div>
+    <p>Placeholder figures for design review</p>
   </div>
 </section>
 
-<!-- ================= MARQUEE ================= -->
-<div class="marquee" aria-hidden="true">
-  <div class="marquee-track">
-    <span>Contract manufacturing</span><span>Private label perfume</span><span>Fragrance OEM &amp; ODM</span><span>Bulk perfume oils</span><span>Custom bottles &amp; caps</span><span>Gift set assembly</span><span>Export from the UAE</span>
-    <span>Contract manufacturing</span><span>Private label perfume</span><span>Fragrance OEM &amp; ODM</span><span>Bulk perfume oils</span><span>Custom bottles &amp; caps</span><span>Gift set assembly</span><span>Export from the UAE</span>
+<div class="ticker" aria-hidden="true"><div class="ticker-track">
+  <span>Contract manufacturing</span><span>Private label perfume</span><span>Fragrance OEM &amp; ODM</span><span>Bulk perfume oils</span><span>Bottles, caps &amp; boxes</span><span>Gift set assembly</span><span>Export from the UAE</span>
+  <span>Contract manufacturing</span><span>Private label perfume</span><span>Fragrance OEM &amp; ODM</span><span>Bulk perfume oils</span><span>Bottles, caps &amp; boxes</span><span>Gift set assembly</span><span>Export from the UAE</span>
+</div></div>
+
+<!-- ================= SERVICES ================= -->
+<section class="services" id="services" data-theme="oud">
+  <div class="sec-head">
+    <p class="kicker rv">What we make</p>
+    <h2 class="display rv" data-split>Four ways to work <span class="it">with our floor.</span></h2>
   </div>
-</div>
-
-<!-- ================= MANIFESTO ================= -->
-<section class="manifesto" id="manifesto">
-  <div class="manifesto-sticky">
-    <p class="manifesto-text" id="manifestoText">Most perfume brands never touch a factory. They send a brief to one. CASSIE is that factory: a Dubai perfume house that develops the scent, sources the glass, fills the bottle and ships the carton, for brand owners, importers and retailers around the world. And because we sell our own fragrances too, we know what a bottle has to do on the shelf, not just in the lab.</p>
-  </div>
-</section>
-
-<!-- ================= STATS ================= -->
-<section class="stats">
-  <div class="stat"><b data-count="40">0</b><sup>+</sup><span>fragrances in our own portfolio</span></div>
-  <div class="stat"><b data-count="120">0</b><sup>+</sup><span>bottle, cap and finish combinations</span></div>
-  <div class="stat"><b data-count="1000">0</b><span>units, indicative private label MOQ</span></div>
-  <div class="stat"><b data-count="5">0</b><span>export regions in focus</span></div>
-  <p class="stats-note">Placeholder figures for design review. Final numbers to be supplied and approved by CASSIE.</p>
-</section>
-
-<!-- ================= SERVICES (horizontal) ================= -->
-<section class="hscroll" id="services">
-  <div class="hs-sticky">
-    <div class="hs-track" id="hsTrack">
-      <div class="hs-panel hs-intro">
-        <p class="kicker">What we make</p>
-        <h2>Four ways<br>to work with<br><em>our floor.</em></h2>
-        <p class="hs-hint"><i></i>Keep scrolling</p>
-      </div>
-
-      <article class="hs-panel hs-card" data-cursor="Explore">
-        <div class="hs-art" data-bottle='{"shape":"facet","cap":"block","capColor":"silver","glass":"crystal","liquid":"#d9b26c","label":"OEM","sub":"BATCH 0426","labelColor":"#f2efe9"}'></div>
-        <div class="hs-copy">
-          <span class="hs-num">01</span>
-          <h3>OEM<br>Manufacturing</h3>
-          <p class="hs-line">Your formula, our lines.</p>
-          <ul><li>You send the concentrate or approved formula</li><li>We compound, macerate, filter, fill and pack</li><li>Batch records and retained samples with every run</li></ul>
+  <div class="rows" id="rows">
+    <article class="row open" style="--tint:#c9772e">
+      <button class="row-head" type="button"><span class="row-num">01</span><h3>OEM Manufacturing</h3><span class="row-tag">Your formula, our lines</span><span class="row-plus"></span></button>
+      <div class="row-body"><div class="row-inner">
+        <div class="row-text">
+          <p>Send us your concentrate or approved formula. We compound, macerate, chill-filter, fill and pack to your specification, batch after batch.</p>
+          <ul><li><b>Best for</b>Established brands moving or adding production</li><li><b>You provide</b>Formula or concentrate, artwork</li><li><b>We deliver</b>Finished, lot-coded, boxed goods</li></ul>
           <a href="#rfq" class="arrow">Quote OEM production</a>
         </div>
-      </article>
-
-      <article class="hs-panel hs-card" data-cursor="Explore">
-        <div class="hs-art" data-bottle='{"shape":"orb","cap":"dome","capColor":"gold","glass":"amber","liquid":"#b8742c","label":"ACCORD","sub":"MOD 03","labelColor":"#f2efe9"}'></div>
-        <div class="hs-copy">
-          <span class="hs-num">02</span>
-          <h3>ODM &amp; Custom<br>Fragrance</h3>
-          <p class="hs-line">A brief becomes a scent.</p>
-          <ul><li>Mood, market and price point to our perfumers</li><li>Original accords across oud, amber, floral, gourmand and fresh</li><li>Iterations until sign-off, exclusive to you</li></ul>
+        <div class="row-art" data-bottle='{"shape":"facet","cap":"block","capColor":"silver","glass":"crystal","liquid":"#d9b26c","label":"OEM","sub":"BATCH 0426","labelColor":"#fff","reflect":true}'></div>
+      </div></div>
+    </article>
+    <article class="row" style="--tint:#e2962a">
+      <button class="row-head" type="button"><span class="row-num">02</span><h3>ODM &amp; Custom Fragrance</h3><span class="row-tag">A brief becomes a scent</span><span class="row-plus"></span></button>
+      <div class="row-body"><div class="row-inner">
+        <div class="row-text">
+          <p>Give us the mood, the market and the price point. Our perfumers build original accords across oud, amber, floral, gourmand and fresh families and refine them with you until sign-off.</p>
+          <ul><li><b>Best for</b>Founders and retailers creating something new</li><li><b>You provide</b>Brief, references, target cost</li><li><b>We deliver</b>Exclusive formula plus full production</li></ul>
           <a href="#rfq" class="arrow">Brief our perfumers</a>
         </div>
-      </article>
-
-      <article class="hs-panel hs-card" data-cursor="Explore">
-        <div class="hs-art" data-bottle='{"shape":"column","cap":"tall","capColor":"black","glass":"frosted","liquid":"#e9dcc2","label":"YOUR LOGO","sub":"PARFUM"}'></div>
-        <div class="hs-copy">
-          <span class="hs-num">03</span>
-          <h3>Private &amp;<br>White Label</h3>
-          <p class="hs-line">Proven juice, your name.</p>
-          <ul><li>Choose from CASSIE-developed fragrances that already sell</li><li>Pick bottle, cap, finish and box</li><li>The fastest route to a first collection</li></ul>
+        <div class="row-art" data-bottle='{"shape":"orb","cap":"dome","capColor":"gold","glass":"amber","liquid":"#b8742c","label":"ACCORD","sub":"MOD 03","labelColor":"#fff","reflect":true}'></div>
+      </div></div>
+    </article>
+    <article class="row" style="--tint:#d46a8a">
+      <button class="row-head" type="button"><span class="row-num">03</span><h3>Private &amp; White Label</h3><span class="row-tag">Proven juice, your name</span><span class="row-plus"></span></button>
+      <div class="row-body"><div class="row-inner">
+        <div class="row-text">
+          <p>Choose from CASSIE-developed fragrances that already sell, then pick bottle, cap, finish and box. The fastest, lowest-risk route to a first collection.</p>
+          <ul><li><b>Best for</b>New brands, influencers, hospitality, retail</li><li><b>You provide</b>Logo and brand colours</li><li><b>We deliver</b>A shelf-ready collection</li></ul>
           <a href="#rfq" class="arrow">Explore private label</a>
         </div>
-      </article>
-
-      <article class="hs-panel hs-card" data-cursor="Explore">
-        <div class="hs-art" data-bottle='{"shape":"slim","cap":"disc","capColor":"gold","glass":"amber","liquid":"#8d4a18","label":"BULK OIL","sub":"25 KG LOT","labelColor":"#f2efe9"}'></div>
-        <div class="hs-copy">
-          <span class="hs-num">04</span>
-          <h3>Bulk Supply<br>&amp; Export</h3>
-          <p class="hs-line">Oils by the kilo. Goods by the container.</p>
-          <ul><li>Concentrated perfume oils and finished goods</li><li>Export documentation and freight-ready packing</li><li>North America, Latin America, Africa, Far East, GCC</li></ul>
+        <div class="row-art" data-bottle='{"shape":"column","cap":"tall","capColor":"black","glass":"frosted","liquid":"#e9dcc2","label":"YOUR LOGO","sub":"PARFUM","reflect":true}'></div>
+      </div></div>
+    </article>
+    <article class="row" style="--tint:#5a9bd4">
+      <button class="row-head" type="button"><span class="row-num">04</span><h3>Bulk Supply &amp; Export</h3><span class="row-tag">Oils by the kilo, goods by the container</span><span class="row-plus"></span></button>
+      <div class="row-body"><div class="row-inner">
+        <div class="row-text">
+          <p>Importers and distributors rely on CASSIE for consistent concentrated oils and finished fragrance, documented and packed for international freight.</p>
+          <ul><li><b>Best for</b>Importers, wholesalers, retail chains</li><li><b>You provide</b>Volumes, destinations, labelling rules</li><li><b>We deliver</b>Export-ready shipments</li></ul>
           <a href="#rfq" class="arrow">Request bulk pricing</a>
         </div>
-      </article>
-
-      <div class="hs-panel hs-end">
-        <h3>Not sure which<br>route fits?</h3>
-        <a href="#rfq" class="pill pill-light magnetic">Talk to an account manager</a>
-      </div>
-    </div>
-    <div class="hs-progress"><i id="hsProgress"></i></div>
-  </div>
-</section>
-
-<!-- ================= ZOOM FILM ================= -->
-<section class="zoom" id="zoom">
-  <div class="zoom-sticky">
-    <div class="zoom-frame" id="zoomFrame">
-      <video id="zoomVideo" muted playsinline loop preload="metadata"></video>
-      <canvas id="zoomMist"></canvas>
-      <div class="zoom-cap"><i></i><span>Xcalibur · brand film</span></div>
-    </div>
-    <div class="zoom-text" id="zoomText">
-      <p class="kicker light">Manufacturing process</p>
-      <h2>Every bottle<br>starts as <em>a brief.</em></h2>
-    </div>
-  </div>
-</section>
-
-<!-- ================= PROCESS (card stack) ================= -->
-<section class="stack" id="process">
-  <div class="stack-head">
-    <p class="kicker">From brief to dispatch</p>
-    <h2 class="rv">Six steps.<br>One accountable partner.</h2>
-  </div>
-  <div class="cards" id="cards">
-    <article class="card" style="--n:0">
-      <div class="card-art" data-bottle='{"shape":"flacon","cap":"none","glass":"crystal","fill":0,"label":"","liquid":"#e2b46a"}'></div>
-      <div class="card-copy"><span>01</span><h3>Brief &amp; consultation</h3><p>We agree the fragrance direction, target market, price point, packaging and quantities, and plan backwards from your launch date.</p></div>
-    </article>
-    <article class="card" style="--n:1">
-      <div class="card-art" data-bottle='{"shape":"flacon","cap":"none","glass":"crystal","fill":0.18,"label":"","liquid":"#d9a14e"}'></div>
-      <div class="card-copy"><span>02</span><h3>Formulation &amp; sampling</h3><p>Perfumers create or match the accord. You receive samples, give feedback and sign off the final formula.</p></div>
-    </article>
-    <article class="card" style="--n:2">
-      <div class="card-art" data-bottle='{"shape":"flacon","cap":"none","glass":"crystal","fill":0.62,"label":"","liquid":"#e2b46a"}'></div>
-      <div class="card-copy"><span>03</span><h3>Compounding &amp; maceration</h3><p>Concentrate is blended with perfumer's alcohol and rested so the fragrance rounds out, then chilled and filtered for clarity.</p></div>
-    </article>
-    <article class="card" style="--n:3">
-      <div class="card-art" data-bottle='{"shape":"flacon","cap":"block","capColor":"gold","glass":"crystal","fill":0.78,"label":"","liquid":"#e2b46a"}'></div>
-      <div class="card-copy"><span>04</span><h3>Filling, crimping &amp; capping</h3><p>Bottles are filled to volume, pumps crimped or screwed, collars and caps fitted on our filling lines.</p></div>
-    </article>
-    <article class="card" style="--n:4">
-      <div class="card-art" data-bottle='{"shape":"flacon","cap":"block","capColor":"gold","glass":"crystal","fill":0.78,"label":"YOUR BRAND","sub":"EAU DE PARFUM · 100 ML","liquid":"#e2b46a","labelColor":"#f2efe9"}'></div>
-      <div class="card-copy"><span>05</span><h3>Decoration &amp; packing</h3><p>Labels, screen print or hot-foil, cartons, inserts and cellophane are applied to your packaging specification.</p></div>
-    </article>
-    <article class="card" style="--n:5">
-      <div class="card-art" data-bottle='{"shape":"flacon","cap":"block","capColor":"gold","glass":"crystal","fill":0.78,"label":"YOUR BRAND","sub":"EAU DE PARFUM · 100 ML","liquid":"#e2b46a","labelColor":"#f2efe9"}'><div class="qc-stamp">QC<br>passed</div></div>
-      <div class="card-copy"><span>06</span><h3>Quality control &amp; dispatch</h3><p>Each batch is checked, lot-coded for traceability and shipped with its documentation, locally or for export.</p></div>
+        <div class="row-art" data-bottle='{"shape":"slim","cap":"disc","capColor":"gold","glass":"amber","liquid":"#8d4a18","label":"BULK OIL","sub":"25 KG LOT","labelColor":"#fff","reflect":true}'></div>
+      </div></div>
     </article>
   </div>
 </section>
 
-<!-- ================= PACKAGING ================= -->
-<section class="packaging" id="packaging">
+<!-- ================= FRAGRANCE FAMILIES ================= -->
+<section class="families" id="families" data-theme="amber">
+  <div class="fam-stage">
+    <div class="fam-orb" id="famOrb"></div>
+    <div class="fam-bottle" id="famBottle"></div>
+    <nav class="fam-ring" id="famRing" aria-label="Fragrance families"></nav>
+  </div>
+  <div class="fam-info">
+    <p class="kicker rv">Fragrance development</p>
+    <h2 class="display rv" data-split>Six families <span class="it">we build.</span></h2>
+    <p class="fam-lede rv">Pick a family to see the accords our perfumers work with and where that profile sells. Every one can be developed as an original, or matched to a reference.</p>
+    <div class="fam-card" id="famCard">
+      <h3 id="famName">Oud &amp; Woody</h3>
+      <p id="famDesc"></p>
+      <div class="fam-row"><span>Accords</span><div id="famAccords"></div></div>
+      <div class="fam-row"><span>Sells best in</span><div id="famMarkets"></div></div>
+      <a href="#rfq" class="arrow">Develop a fragrance in this family</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PROCESS ================= -->
+<section class="process" id="process" data-theme="fresh">
   <div class="sec-head">
-    <p class="kicker">Packaging &amp; customisation</p>
-    <h2 class="rv">Dress the<br><em>fragrance.</em></h2>
-    <p class="sec-sub">Three finish tiers, mixed and matched to your budget and positioning. Hover to look closer.</p>
+    <p class="kicker rv">Manufacturing process</p>
+    <h2 class="display rv" data-split>From brief to dispatch, <span class="it">six steps.</span></h2>
   </div>
-  <div class="tiers">
-    <article class="tier tilt" data-cursor="Details">
-      <div class="tier-glow"></div>
-      <div class="tier-art" data-bottle='{"shape":"column","cap":"disc","capColor":"black","glass":"crystal","liquid":"#e3c58e","label":"ESSENTIAL","labelColor":"#f2efe9"}'></div>
-      <div class="tier-copy">
-        <span class="tier-num">Tier 01</span>
-        <h3>Essential</h3>
-        <p>Smart entry point for new brands and promotions.</p>
-        <ul><li>Stock glass bottles</li><li>Screw pump, plastic cap</li><li>Printed label, folding carton</li></ul>
-      </div>
-    </article>
-    <article class="tier tilt featured" data-cursor="Details">
-      <div class="tier-glow"></div>
-      <span class="badge">Most requested</span>
-      <div class="tier-art" data-bottle='{"shape":"flacon","cap":"block","capColor":"gold","glass":"crystal","liquid":"#d9a95a","label":"SIGNATURE","labelColor":"#f2efe9"}'></div>
-      <div class="tier-copy">
-        <span class="tier-num">Tier 02</span>
-        <h3>Signature</h3>
-        <p>The look of a department-store fragrance.</p>
-        <ul><li>Heavy-base premium glass</li><li>Crimped pump, metal collar, zamac cap</li><li>Screen print or hot-foil, rigid box</li></ul>
-      </div>
-    </article>
-    <article class="tier tilt" data-cursor="Details">
-      <div class="tier-glow"></div>
-      <div class="tier-art" data-bottle='{"shape":"facet","cap":"crystal","capColor":"gold","glass":"noir","liquid":"#2a1c10","label":"PRESTIGE"}'></div>
-      <div class="tier-copy">
-        <span class="tier-num">Tier 03</span>
-        <h3>Prestige</h3>
-        <p>Collector pieces and luxury gifting.</p>
-        <ul><li>Custom mould or faceted glass</li><li>Lacquer, metallisation, crystal caps</li><li>Magnetic gift box, coffrets</li></ul>
-      </div>
-    </article>
+  <div class="timeline">
+    <svg class="tl-line" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true">
+      <path id="tlPathBg" d="M0 60 C 150 10, 250 110, 400 60 S 650 10, 800 60 S 1050 110, 1200 60" fill="none" stroke="currentColor" stroke-opacity=".15" stroke-width="2"/>
+      <path id="tlPath" d="M0 60 C 150 10, 250 110, 400 60 S 650 10, 800 60 S 1050 110, 1200 60" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+    <ol class="steps">
+      <li class="step rv"><i></i><span>01</span><h4>Brief &amp; consultation</h4><p>Direction, market, price point, packaging and quantities agreed; timeline planned back from launch.</p></li>
+      <li class="step rv"><i></i><span>02</span><h4>Formulation &amp; sampling</h4><p>Perfumers create or match the accord. You sample, give feedback and sign off the formula.</p></li>
+      <li class="step rv"><i></i><span>03</span><h4>Compounding &amp; maceration</h4><p>Concentrate is blended with perfumer's alcohol and rested, then chilled and filtered for clarity.</p></li>
+      <li class="step rv"><i></i><span>04</span><h4>Filling, crimping &amp; capping</h4><p>Bottles filled to volume, pumps crimped or screwed, collars and caps fitted on our lines.</p></li>
+      <li class="step rv"><i></i><span>05</span><h4>Decoration &amp; packing</h4><p>Labels, screen print or hot-foil, cartons, inserts and cellophane to your specification.</p></li>
+      <li class="step rv"><i></i><span>06</span><h4>Quality control &amp; dispatch</h4><p>Each batch checked, lot-coded and shipped with its documents, locally or for export.</p></li>
+    </ol>
   </div>
-  <ul class="components">
-    <li>Bottles 10–200 ml</li><li>Zamac &amp; wood caps</li><li>Crimp &amp; screw pumps</li><li>Screen print &amp; hot-foil</li><li>Rigid &amp; magnetic boxes</li><li>Gift sets &amp; coffrets</li><li>Travel sprays</li><li>Custom moulds</li>
-  </ul>
+</section>
+
+<!-- ================= PACKAGING CONFIGURATOR ================= -->
+<section class="packaging" id="packaging" data-theme="musk">
+  <div class="pack-stage">
+    <div class="pack-render" id="packRender"></div>
+    <p class="pack-caption" id="packCaption"></p>
+  </div>
+  <div class="pack-panel">
+    <p class="kicker rv">Packaging &amp; customisation</p>
+    <h2 class="display rv" data-split>Dress the <span class="it">fragrance.</span></h2>
+    <p class="pack-lede rv">Build a bottle from the components CASSIE sources and assembles. Your configuration is attached to your quotation.</p>
+    <label class="pack-name"><span>Brand name on label</span><input id="packLabel" maxlength="14" value="YOUR BRAND" placeholder="YOUR BRAND"></label>
+    <div class="opt-group"><h5>Bottle</h5><div class="opts" data-key="shape"><button data-val="facet" class="on">Facet</button><button data-val="flacon">Flacon</button><button data-val="tall">Tall</button><button data-val="column">Column</button><button data-val="orb">Orb</button><button data-val="slim">Slim</button></div></div>
+    <div class="opt-group"><h5>Cap</h5><div class="opts" data-key="cap"><button data-val="block" class="on">Zamac block</button><button data-val="tall">Tower</button><button data-val="dome">Dome</button><button data-val="sphere">Sphere</button><button data-val="crystal">Crystal</button><button data-val="disc">Disc</button></div></div>
+    <div class="opt-group"><h5>Cap finish</h5><div class="opts swatches" data-key="capColor"><button data-val="gold" class="on" style="--sw:#cfa75d" title="Gold"></button><button data-val="silver" style="--sw:#bfc2c9" title="Silver"></button><button data-val="black" style="--sw:#1c1c1e" title="Matte black"></button><button data-val="rosegold" style="--sw:#d69d87" title="Rose gold"></button><button data-val="wood" style="--sw:#8f6140" title="Wood"></button><button data-val="white" style="--sw:#f2f0ec" title="White"></button></div></div>
+    <div class="opt-group"><h5>Glass</h5><div class="opts" data-key="glass"><button data-val="noir" class="on">Noir lacquer</button><button data-val="crystal">Crystal clear</button><button data-val="frosted">Frosted</button><button data-val="amber">Amber</button><button data-val="smoke">Smoke</button><button data-val="rose">Blush</button><button data-val="violet">Violet</button><button data-val="emerald">Emerald</button></div></div>
+    <div class="tiers">
+      <div><h6>Essential</h6><p>Stock glass, screw pump, printed label, folding carton.</p></div>
+      <div><h6>Signature</h6><p>Crimped pump, zamac cap, screen print or hot-foil, rigid box.</p></div>
+      <div><h6>Prestige</h6><p>Custom mould, lacquer or metallisation, magnetic gift box.</p></div>
+    </div>
+    <a href="#rfq" class="btn btn-solid big" id="packToRfq">Quote this configuration</a>
+  </div>
 </section>
 
 <!-- ================= QUALITY ================= -->
-<section class="quality" id="quality">
+<section class="quality" id="quality" data-theme="musk">
   <div class="sec-head">
-    <p class="kicker">Quality &amp; compliance</p>
-    <h2 class="rv">The paperwork buyers ask for,<br><em>ready on day one.</em></h2>
+    <p class="kicker rv">Quality &amp; compliance</p>
+    <h2 class="display rv" data-split>The paperwork buyers ask for, <span class="it">ready on day one.</span></h2>
   </div>
-  <div class="spots" id="spots">
-    <div class="spot"><span>IFRA</span><h4>IFRA-aligned formulation</h4><p>Developed within IFRA standards for the product category and destination market.</p></div>
-    <div class="spot"><span>SDS</span><h4>Safety data &amp; allergens</h4><p>SDS/MSDS and allergen declarations supplied with every order.</p></div>
-    <div class="spot"><span>CoA</span><h4>Certificates of analysis</h4><p>Batch-level analysis documents for your importers and regulators.</p></div>
-    <div class="spot"><span>LOT</span><h4>Batch traceability</h4><p>Lot codes on every unit, production records and retained samples.</p></div>
-    <div class="spot"><span>QC</span><h4>In-process checks</h4><p>Component inspection, fill-level, crimp and leak testing, clarity and stability.</p></div>
-    <div class="spot"><span>ISO</span><h4>ISO 14001:2015</h4><p>Environmental management certification, to be confirmed with CASSIE's certificate.</p></div>
+  <div class="qgrid">
+    <div class="qcard rv"><span>IFRA</span><h4>IFRA-aligned formulation</h4><p>Developed within IFRA standards for the product category and destination market.</p></div>
+    <div class="qcard rv"><span>SDS</span><h4>Safety data &amp; allergens</h4><p>SDS/MSDS and allergen declarations supplied with every order.</p></div>
+    <div class="qcard rv"><span>CoA</span><h4>Certificates of analysis</h4><p>Batch-level documents for your importers and regulators.</p></div>
+    <div class="qcard rv"><span>LOT</span><h4>Batch traceability</h4><p>Lot codes on every unit, production records and retained samples.</p></div>
+    <div class="qcard rv"><span>QC</span><h4>In-process checks</h4><p>Component inspection, fill level, crimp and leak testing, clarity and stability.</p></div>
+    <div class="qcard rv"><span>ISO</span><h4>ISO 14001:2015</h4><p>Environmental management certification, to be confirmed with CASSIE's certificate.</p></div>
   </div>
 </section>
 
 <!-- ================= EXPORT ================= -->
-<section class="export" id="export">
+<section class="export" id="export" data-theme="midnight">
   <div class="sec-head">
-    <p class="kicker">Bulk supply &amp; export</p>
-    <h2 class="rv">From Dubai<br>to <em>your market.</em></h2>
+    <p class="kicker rv">Bulk supply &amp; export</p>
+    <h2 class="display rv" data-split>From Dubai <span class="it">to your market.</span></h2>
   </div>
-  <ul class="regions" id="regions">
-    <li data-peek="0"><b>North America</b><span>Private label &amp; DTC launches, retail programmes</span><i>01</i></li>
-    <li data-peek="1"><b>Latin America</b><span>Distributor partnerships, oud &amp; Arabian-style fragrance</span><i>02</i></li>
-    <li data-peek="2"><b>Africa</b><span>Bulk perfume oils and finished goods for importers</span><i>03</i></li>
-    <li data-peek="3"><b>Far East</b><span>OEM production, gift sets, seasonal programmes</span><i>04</i></li>
-    <li data-peek="4"><b>GCC</b><span>Short lead times, direct delivery from the UAE</span><i>05</i></li>
-  </ul>
-  <div class="peek" id="peek" aria-hidden="true">
-    <div class="peek-item" data-bottle='{"shape":"flacon","cap":"block","capColor":"black","glass":"smoke","liquid":"#3a3a3a","label":"NORTH"}'></div>
-    <div class="peek-item" data-bottle='{"shape":"column","cap":"tall","capColor":"wood","glass":"amber","liquid":"#a35a1e","label":"OUDH","labelColor":"#f2efe9"}'></div>
-    <div class="peek-item" data-bottle='{"shape":"slim","cap":"disc","capColor":"gold","glass":"amber","liquid":"#8d4a18","label":"OIL","labelColor":"#f2efe9"}'></div>
-    <div class="peek-item" data-bottle='{"shape":"orb","cap":"crystal","capColor":"silver","glass":"rose","liquid":"#f2b7b0","label":"SAKURA","labelColor":"#f2efe9"}'></div>
-    <div class="peek-item" data-bottle='{"shape":"facet","cap":"block","capColor":"gold","glass":"noir","liquid":"#2a1c10","label":"GULF"}'></div>
+  <div class="hub-wrap">
+    <div class="hub" id="hub">
+      <svg class="hub-lines" id="hubLines" aria-hidden="true"></svg>
+      <div class="node center" style="--x:50%;--y:52%"><b>DXB</b><span>Dubai, UAE</span></div>
+      <div class="node" style="--x:12%;--y:30%"><b>North America</b><span>Private label &amp; DTC launches</span></div>
+      <div class="node" style="--x:16%;--y:78%"><b>Latin America</b><span>Distributors, oud &amp; Arabian styles</span></div>
+      <div class="node" style="--x:50%;--y:92%"><b>Africa</b><span>Bulk oils &amp; finished goods</span></div>
+      <div class="node" style="--x:86%;--y:72%"><b>Far East</b><span>OEM, gift sets, seasonal</span></div>
+      <div class="node" style="--x:84%;--y:24%"><b>GCC</b><span>Short lead times, direct delivery</span></div>
+    </div>
+    <ul class="hub-list">
+      <li class="rv"><b>Documentation</b><span>Invoices, packing lists, certificates of origin and dangerous-goods paperwork prepared with each shipment.</span></li>
+      <li class="rv"><b>Packing</b><span>Finished goods palletised and wrapped for sea or air; concentrated oils in UN-approved drums.</span></li>
+      <li class="rv"><b>Lead times</b><span>Stock components ship fastest; custom moulds and decoration are scheduled around your launch date.</span></li>
+    </ul>
   </div>
 </section>
 
 <!-- ================= OWN BRAND (secondary) ================= -->
-<section class="collection" id="collection">
+<section class="collection" id="collection" data-theme="plum">
   <div class="col-head">
-    <div>
-      <p class="kicker">Also from our house</p>
-      <h2 class="rv">The CASSIE<br><em>collection.</em></h2>
-    </div>
-    <p>The fragrances we make under our own name, on the same lines we offer our partners. <a href="https://www.cassieperfumes.com/shop/" class="arrow" target="_blank" rel="noopener">Shop CASSIE</a></p>
+    <div><p class="kicker rv">Also from our house</p><h2 class="display rv" data-split>The CASSIE <span class="it">collection.</span></h2></div>
+    <p class="rv">The fragrances we make under our own name, on the same lines we offer our partners. <a href="https://www.cassieperfumes.com/shop/" class="arrow" target="_blank" rel="noopener">Shop CASSIE</a></p>
   </div>
-  <div class="gallery" id="gallery" data-cursor="Drag">
-    <a class="g-item" href="#"><div class="g-img"><img loading="lazy" src="https://www.cassieperfumes.com/wp-content/uploads/2025/08/OUD-ROYALE-1.jpg" alt="Oud Royale" data-fallback='{"shape":"facet","glass":"noir","capColor":"gold","label":"OUD ROYALE","liquid":"#3a1d0c"}'></div><b>Oud Royale</b><span>AED 269</span></a>
-    <a class="g-item" href="#"><div class="g-img"><img loading="lazy" src="https://www.cassieperfumes.com/wp-content/uploads/2025/07/AFRICA-COUTURE.png" alt="Africa Couture" data-fallback='{"shape":"column","glass":"amber","capColor":"gold","label":"AFRICA","liquid":"#b06a2a","labelColor":"#f2efe9"}'></div><b>Africa Couture</b><span>100 ml · AED 198</span></a>
-    <a class="g-item" href="#"><div class="g-img"><img loading="lazy" src="https://www.cassieperfumes.com/wp-content/uploads/2025/08/perfume-8-1.png" alt="Amor Loco" data-fallback='{"shape":"orb","glass":"rose","capColor":"rosegold","label":"AMOR LOCO","liquid":"#f1b4a8","labelColor":"#f2efe9"}'></div><b>Amor Loco</b><span>100 ml · AED 225</span></a>
-    <a class="g-item" href="#"><div class="g-img"><img loading="lazy" src="https://www.cassieperfumes.com/wp-content/uploads/2025/12/El-Hombre.jpg" alt="El Hombre" data-fallback='{"shape":"column","glass":"smoke","capColor":"black","label":"EL HOMBRE","liquid":"#4a3a2a"}'></div><b>El Hombre</b><span>AED 315</span></a>
-    <a class="g-item" href="#"><div class="g-img"><img loading="lazy" src="https://www.cassieperfumes.com/wp-content/uploads/2025/12/Lucid-Dreams.jpg" alt="Lucid Dreams" data-fallback='{"shape":"slim","glass":"frosted","capColor":"silver","label":"LUCID","liquid":"#e8d6b0"}'></div><b>Lucid Dreams</b><span>80 ml · AED 315</span></a>
-    <a class="g-item" href="#"><div class="g-img"><img loading="lazy" src="https://www.cassieperfumes.com/wp-content/uploads/2025/12/legend.jpg" alt="Legend" data-fallback='{"shape":"flacon","glass":"smoke","capColor":"black","label":"LEGEND","liquid":"#4a3a2a"}'></div><b>Legend</b><span>100 ml · AED 342</span></a>
+  <div class="gallery" id="gallery">
+    <a class="g-item" href="#"><div class="g-img"><img loading="lazy" src="https://www.cassieperfumes.com/wp-content/uploads/2025/08/OUD-ROYALE-1.jpg" alt="Oud Royale" data-fallback='{"shape":"facet","glass":"noir","capColor":"gold","label":"OUD ROYALE","liquid":"#3a1d0c","reflect":true}'></div><b>Oud Royale</b><span>AED 269</span></a>
+    <a class="g-item" href="#"><div class="g-img"><img loading="lazy" src="https://www.cassieperfumes.com/wp-content/uploads/2025/08/perfume-3.png" alt="Belle Mademoiselle" data-fallback='{"shape":"orb","glass":"rose","capColor":"rosegold","label":"BELLE","liquid":"#f0b4aa","reflect":true}'></div><b>Belle Mademoiselle</b><span>100 ml · AED 225</span></a>
+    <a class="g-item" href="#"><div class="g-img"><img loading="lazy" src="https://www.cassieperfumes.com/wp-content/uploads/2025/08/indulge-4.jpg" alt="Indulge Choco Kunafa" data-fallback='{"shape":"flacon","glass":"amber","capColor":"gold","label":"INDULGE","liquid":"#7a3e18","reflect":true}'></div><b>Indulge – Choco Kunafa</b><span>75 ml · AED 225</span></a>
+    <a class="g-item" href="#"><div class="g-img"><img loading="lazy" src="https://www.cassieperfumes.com/wp-content/uploads/2025/12/El-Hombre.jpg" alt="El Hombre" data-fallback='{"shape":"column","glass":"smoke","capColor":"black","label":"EL HOMBRE","liquid":"#4a3a2a","reflect":true}'></div><b>El Hombre</b><span>AED 315</span></a>
+    <a class="g-item" href="#"><div class="g-img"><img loading="lazy" src="https://www.cassieperfumes.com/wp-content/uploads/2025/12/Lucid-Dreams.jpg" alt="Lucid Dreams" data-fallback='{"shape":"slim","glass":"frosted","capColor":"silver","label":"LUCID","liquid":"#e8d6b0","reflect":true}'></div><b>Lucid Dreams</b><span>80 ml · AED 315</span></a>
+    <a class="g-item" href="#"><div class="g-img"><img loading="lazy" src="https://www.cassieperfumes.com/wp-content/uploads/2025/08/perfume-10.png" alt="Lush" data-fallback='{"shape":"tall","glass":"violet","capColor":"silver","label":"LUSH","liquid":"#c9a7ff","reflect":true}'></div><b>Lush</b><span>100 ml · AED 198</span></a>
   </div>
-  <div class="dist"><span>Want to stock CASSIE in your store or market?</span><a href="#rfq" class="arrow">Distributor &amp; reseller enquiry</a></div>
+  <div class="dist rv"><span>Want to stock CASSIE in your store or market?</span><a href="#rfq" class="arrow">Distributor &amp; reseller enquiry</a></div>
 </section>
 
 <!-- ================= RFQ ================= -->
-<section class="rfq" id="rfq">
+<section class="rfq" id="rfq" data-theme="oud">
   <div class="rfq-intro">
-    <p class="kicker">Request a quotation</p>
-    <h2 class="rv">Let's scope<br>your <em>line.</em></h2>
-    <p>Share a few details and a CASSIE account manager replies with feasibility, MOQs, timelines and indicative pricing.</p>
-    <div class="contact-lines">
-      <a href="mailto:info@cassieperfumes.com" data-cursor="Email">info@cassieperfumes.com</a>
-      <a href="tel:+97167433100" data-cursor="Call">+971 6 743 3100</a>
-      <a href="https://wa.me/97167433100" target="_blank" rel="noopener" data-cursor="Chat">WhatsApp Business</a>
+    <p class="kicker rv">Request a quotation</p>
+    <h2 class="display rv" data-split>Let's scope <span class="it">your line.</span></h2>
+    <p class="rv">Share a few details and a CASSIE account manager replies with feasibility, MOQs, timelines and indicative pricing.</p>
+    <div class="contact-lines rv">
+      <a href="mailto:info@cassieperfumes.com">info@cassieperfumes.com</a>
+      <a href="tel:+97167433100">+971 6 743 3100</a>
+      <a href="https://wa.me/97167433100" target="_blank" rel="noopener">WhatsApp Business</a>
     </div>
   </div>
-  <form class="rfq-form" id="rfqForm" novalidate>
+  <form class="rfq-form glass rv" id="rfqForm" novalidate>
     <div class="f-grid">
       <label><span>Name</span><input name="name" required></label>
       <label><span>Company</span><input name="company" required></label>
       <label><span>Business email</span><input type="email" name="email" required></label>
       <label><span>Phone / WhatsApp</span><input name="phone"></label>
       <label><span>Country / target market</span><input name="country"></label>
-      <label><span>Estimated quantity</span>
-        <select name="qty"><option value="">Select</option><option>1,000 – 5,000 units</option><option>5,000 – 20,000 units</option><option>20,000 – 100,000 units</option><option>100,000+ units</option><option>Bulk oil (kg)</option></select>
-      </label>
+      <label><span>Estimated quantity</span><select name="qty"><option value="">Select</option><option>1,000 – 5,000 units</option><option>5,000 – 20,000 units</option><option>20,000 – 100,000 units</option><option>100,000+ units</option><option>Bulk oil (kg)</option></select></label>
     </div>
-    <div class="f-pills">
-      <span>Service</span>
-      <div><label><input type="checkbox">OEM</label><label><input type="checkbox">ODM / custom scent</label><label><input type="checkbox">Private label</label><label><input type="checkbox">White label</label><label><input type="checkbox">Bulk oils</label><label><input type="checkbox">Gift sets</label></div>
-    </div>
-    <div class="f-pills">
-      <span>Packaging tier</span>
-      <div><label><input type="radio" name="tier">Essential</label><label><input type="radio" name="tier" checked>Signature</label><label><input type="radio" name="tier">Prestige</label><label><input type="radio" name="tier">Not sure</label></div>
-    </div>
-    <label class="f-area"><span>Project details</span><textarea name="details" rows="3" placeholder="Fragrance direction, bottle size, branding needs, launch date..."></textarea></label>
+    <div class="f-pills"><span>Service</span><div><label><input type="checkbox">OEM</label><label><input type="checkbox">ODM / custom scent</label><label><input type="checkbox">Private label</label><label><input type="checkbox">White label</label><label><input type="checkbox">Bulk oils</label><label><input type="checkbox">Gift sets</label></div></div>
+    <div class="f-pills"><span>Packaging tier</span><div><label><input type="radio" name="tier">Essential</label><label><input type="radio" name="tier" checked>Signature</label><label><input type="radio" name="tier">Prestige</label><label><input type="radio" name="tier">Not sure</label></div></div>
+    <label class="f-area"><span>Project details</span><textarea name="details" id="packField" rows="3" placeholder="Fragrance direction, bottle size, branding needs, launch date..."></textarea></label>
     <label class="f-check"><input type="checkbox"> Add a sample kit to my request</label>
-    <div class="f-actions">
-      <button type="submit" class="pill pill-light magnetic big">Send request <i>→</i></button>
-      <p>Confidential. In the live site this posts to CASSIE's Zoho CRM as a manufacturing lead.</p>
-    </div>
+    <div class="f-actions"><button type="submit" class="btn btn-solid big">Send request</button><p>Confidential. In the live site this posts to CASSIE's Zoho CRM as a manufacturing lead.</p></div>
     <div class="f-done" hidden><h3>Thank you.</h3><p>Your request is with the CASSIE sales team.</p></div>
   </form>
 </section>
 
 </main>
 
-<!-- ================= FOOTER ================= -->
-<footer class="footer">
-  <div class="foot-cta">
-    <h2>Ready to build<br>your <em>fragrance brand?</em></h2>
-    <a href="#rfq" class="pill pill-light magnetic big">Get a quote</a>
+<footer class="footer" data-theme="oud">
+  <div class="foot-top">
+    <h2 class="display">Ready to build <span class="it">your fragrance brand?</span></h2>
+    <a href="#rfq" class="btn btn-solid big">Get a quote</a>
   </div>
   <div class="foot-grid">
     <div><h6>Manufacturing</h6><a href="#services">Contract manufacturing</a><a href="#services">Private label / OEM / ODM</a><a href="#export">Bulk supply &amp; export</a><a href="#packaging">Packaging &amp; customisation</a><a href="#quality">Quality &amp; compliance</a></div>
-    <div><h6>Company</h6><a href="#manifesto">About CASSIE</a><a href="#process">Manufacturing process</a><a href="#">Portfolio</a><a href="#">Insights</a></div>
+    <div><h6>Company</h6><a href="#hero">About CASSIE</a><a href="#process">Manufacturing process</a><a href="#">Portfolio</a><a href="#">Insights</a></div>
     <div><h6>Shop</h6><a href="#collection">Our fragrances</a><a href="#collection">Gift sets</a><a href="#rfq">Wholesale &amp; distributors</a></div>
     <div><h6>Reach us</h6><a href="tel:+97167433100">+971 6 743 3100</a><a href="mailto:info@cassieperfumes.com">info@cassieperfumes.com</a><span>Dubai, United Arab Emirates</span><span class="soc"><a href="https://instagram.com/cassieperfumes">Instagram</a><a href="https://www.youtube.com/@cassieperfumes">YouTube</a><a href="https://www.tiktok.com/@cassieperfumes">TikTok</a></span></div>
   </div>
-  <div class="giant" aria-hidden="true">CASSIE</div>
-  <p class="legal">© 2026 CASSIE Perfumes · Design draft by The Digital Elites · Figures, certifications and testimonials are placeholders pending CASSIE approval.</p>
+  <div class="wordmark" aria-hidden="true">CASSIE</div>
+  <p class="legal">© 2026 CASSIE Perfumes · Design draft by The Digital Elites · Figures and certifications are placeholders pending CASSIE approval.</p>
 </footer>
 
 <a href="https://wa.me/97167433100" class="wa-float" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
